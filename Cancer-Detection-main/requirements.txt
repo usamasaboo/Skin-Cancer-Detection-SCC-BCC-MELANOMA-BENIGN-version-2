@@ -9,3 +9,5 @@ Pillow
 fpdf
 pandas
 matplotlib
+albumentations
+tqdm
