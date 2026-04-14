@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .admin-container {
+        padding: 40px 0;
+        background-color: var(--bg-surface);
+        min-height: calc(100vh - 160px);
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 20px;
+        padding: 1.5rem;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .stat-label {
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+        color: var(--text-dark);
+        font-size: 2.5rem;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 1rem;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        opacity: 0.9;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-5 animated">
+            <div>
+                <div class="badge bg-soft text-primary mb-2 px-3 py-2 rounded-pill fw-bold" style="font-size: 0.7rem;">
+                    SYSTEM ADMIN v2.0</div>
+                <h1 class="display-4 mb-1">Health Intelligence Center</h1>
+                <p class="text-muted mb-0">Global diagnostic metrics and system performance analytics.</p>
+            </div>
+        </div>
+
+        <!-- Main Intelligence Grid -->
+        <div class="row g-4 mb-5 animated">
+            <!-- 1. Executive Overview -->
+            <div class="col-md-4">
+                <div class="card-premium h-100 d-flex flex-column" style="border-top: 5px solid #1e3a8a;">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div>
+                            <h4 class="fw-bold mb-1">Executive Overview</h4>
+                            <p class="text-muted small">Global system statistics</p>
+                        </div>
+                        <div class="stat-icon bg-primary-soft text-primary">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </div>
+                    </div>
+                    <div class="row g-2 mb-4">
+                        <div class="col-6">
+                            <div class="p-3 bg-surface rounded-3">
+                                <div class="small text-muted mb-1">Total Users</div>
+                                <div class="h3 fw-bold mb-0">{{ stats.total_users }}</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 bg-surface rounded-3">
+                                <div class="small text-muted mb-1">Total Scans</div>
+                                <div class="h3 fw-bold mb-0">{{ stats.total_scans }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-auto pt-3 border-top border-light text-center">
+                        <span class="badge bg-primary-soft text-primary px-3 py-1 x-small fw-bold">Live System
+                            Data</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Clinical Performance -->
+            <div class="col-md-4">
+                <div class="card-premium h-100 d-flex flex-column" style="border-top: 5px solid #6366f1;">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div>
+                            <h4 class="fw-bold mb-1">Clinical Performance</h4>
+                            <p class="text-muted small">AI model reliability metrics</p>
+                        </div>
+                        <div class="stat-icon" style="background: #eef2ff; color: #6366f1;">
+                            <i class="fa-solid fa-microscope"></i>
+                        </div>
+                    </div>
+                    <div style="height: 100px; position: relative;" class="mb-2">
+                        <canvas id="miniDistributionChart"></canvas>
+                    </div>
+                    <a href="{{ url_for('performance') }}" class="btn btn-sm btn-outline-indigo w-100 py-2 mt-auto"
+                        style="border-color: #6366f1; color: #6366f1;">
+                        Detailed Analytics
+                    </a>
+                </div>
+            </div>
+
+            <!-- 3. Patient Registry Summary -->
+            <div class="col-md-4">
+                <div class="card-premium h-100 d-flex flex-column" style="border-top: 5px solid #10b981;">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div>
+                            <h4 class="fw-bold mb-1">Patient Registry</h4>
+                            <p class="text-muted small">Manage clinical user base</p>
+                        </div>
+                        <div class="stat-icon bg-success-soft text-success">
+                            <i class="fa-solid fa-users-medical"></i>
+                        </div>
+                    </div>
+                    <div class="list-group list-group-flush small mb-3">
+                        <div class="list-group-item bg-transparent d-flex justify-content-between px-0">
+                            <span>Active Protocols</span>
+                            <span class="fw-bold text-success">{{ stats.active_protocols }}</span>
+                        </div>
+                        <div class="list-group-item bg-transparent d-flex justify-content-between px-0">
+                            <span>Pending Verifications</span>
+                            <span class="fw-bold text-warning">{{ stats.pending_verifications }}</span>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('patient_registry') }}"
+                        class="btn btn-sm btn-outline-success w-100 py-2 mt-auto">Manage Patient Registry</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 animated">
+            <!-- 4. System Health -->
+            <div class="col-md-4">
+                <div class="card-premium h-100 d-flex flex-column p-4" style="border-top: 5px solid #0ea5e9;">
+                    <div class="icon-box mb-4 shadow-sm"
+                        style="color: #0ea5e9; background: #f0f9ff; width: 48px; height: 48px;">
+                        <i class="fa-solid fa-server small"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">System Health</h5>
+                    <p class="text-muted mb-4 x-small">Real-time server latency, DB load, and GPU inference status.</p>
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="pulse-dot"></div>
+                        <span class="small fw-bold text-success text-uppercase">Optimal</span>
+                    </div>
+                    <a href="{{ url_for('system_health') }}"
+                        class="btn btn-sm btn-outline-primary w-100 py-2 mt-auto font-xs">Monitor Status</a>
+                </div>
+            </div>
+
+            <!-- 5. Security Audit -->
+            <div class="col-md-4">
+                <div class="card-premium h-100 d-flex flex-column p-4" style="border-top: 5px solid #64748b;">
+                    <div class="icon-box mb-4 shadow-sm"
+                        style="color: #64748b; background: #f8fafc; width: 48px; height: 48px;">
+                        <i class="fa-solid fa-shield-halved small"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Security Audit</h5>
+                    <p class="text-muted mb-4 x-small">Review HIPAA compliance logs, access tracking, and encryption
+                        status. Ensuring maximum security for sensitive clinical data.</p>
+
+                    <div class="mt-auto">
+                        <a href="{{ url_for('security_audit') }}"
+                            class="btn btn-sm btn-secondary w-100 py-2 font-xs">Configure</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Protocol Settings -->
+            <div class="col-md-4">
+                <div class="card-premium h-100 d-flex flex-column p-4" style="border-top: 5px solid #a855f7;">
+                    <div class="icon-box mb-4 shadow-sm"
+                        style="color: #a855f7; background: #f5f3ff; width: 48px; height: 48px;">
+                        <i class="fa-solid fa-gears small"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Protocol Settings</h5>
+                    <p class="text-muted mb-4 x-small">Adjust diagnostic sensitivity thresholds and model weights.
+                        Configure the clinical sensitivity of malignancy triggers and benign-protection layers.</p>
+                    <div class="mt-auto pt-3">
+                        <a href="{{ url_for('protocols') }}" class="btn btn-sm w-100 py-2 font-xs fw-bold"
+                            style="background-color: #a855f7 !important; color: white !important; border: none; box-shadow: 0 4px 6px rgba(168, 85, 247, 0.2);">
+                            Refine Protocols
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wellness Module Shortcut Row -->
+        <div class="row mt-5 animated">
+            <div class="col-12">
+                <div class="card-premium p-4 d-flex justify-content-between align-items-center"
+                    style="border-left: 5px solid var(--accent-blue);">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="stat-icon bg-primary-soft text-primary">
+                            <i class="fa-solid fa-notes-medical"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-1">Patient Wellness Journal</h5>
+                            <p class="text-muted small mb-0">Monitor patient-reported symptoms, color changes, and
+                                clinical observations across the patient base.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('admin_wellness') }}"
+                            class="btn btn-primary px-4 py-2 rounded-pill fw-bold shadow-sm">
+                            <i class="fa-solid fa-external-link-alt me-2"></i>Open Full Module
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const labels = ['Melanoma', 'SCC', 'BCC', 'Benign'];
+            const dataValues = [
+                Number('{{ stats.melanoma_count|default(0) }}'),
+                Number('{{ stats.scc_count|default(0) }}'),
+                Number('{{ stats.bcc_count|default(0) }}'),
+                Number('{{ stats.benign_count|default(0) }}')
+            ];
+            const colors = ['#be123c', '#a16207', '#1d4ed8', '#15803d'];
+
+            const commonOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%',
+                plugins: {
+                    legend: { display: false }
+                }
+            };
+
+            const canvas = document.getElementById('miniDistributionChart');
+            if (canvas) {
+                const miniCtx = canvas.getContext('2d');
+                new Chart(miniCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: dataValues,
+                            backgroundColor: colors,
+                            borderWidth: 2,
+                            borderColor: '#ffffff'
+                        }]
+                    },
+                    options: commonOptions
+                });
+            }
+        });
+    </script>
+    {% endblock %}

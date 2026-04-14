@@ -1,0 +1,529 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+    .analysis-container {
+        padding: 60px 0;
+        background-color: var(--bg-surface);
+        min-height: calc(100vh - 160px);
+    }
+
+    .scanner-box {
+        position: relative;
+        border-radius: 24px;
+        overflow: hidden;
+        background: black;
+        box-shadow: var(--shadow-lg);
+        display: none;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .scanner-laser {
+        position: absolute;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, var(--primary-blue), transparent);
+        box-shadow: 0 0 20px 2px var(--primary-blue);
+        z-index: 10;
+        display: none;
+        animation: scan 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes scan {
+        0% {
+            top: 0%;
+            opacity: 0;
+        }
+
+        10% {
+            opacity: 1;
+        }
+
+        90% {
+            opacity: 1;
+        }
+
+        100% {
+            top: 100%;
+            opacity: 0;
+        }
+    }
+
+    .result-card {
+        display: none;
+        margin-top: 40px;
+    }
+
+    .risk-banner {
+        padding: 2rem;
+        border-radius: 16px;
+        text-align: center;
+        font-weight: 800;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 2rem;
+    }
+
+    .risk-high {
+        background-color: #be123c;
+        color: white;
+    }
+
+    .risk-medium {
+        background-color: #a16207;
+        color: white;
+    }
+
+    .risk-low {
+        background-color: #15803d;
+        color: white;
+    }
+
+    .confidence-gauge {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto 2rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .gauge-svg {
+        transform: rotate(-90deg);
+        width: 100%;
+        height: 100%;
+    }
+
+    .gauge-bg {
+        fill: none;
+        stroke: #f1f5f9;
+        stroke-width: 12;
+    }
+
+    .gauge-fill {
+        fill: none;
+        stroke: var(--primary-blue);
+        stroke-width: 12;
+        stroke-linecap: round;
+        stroke-dasharray: 440;
+        stroke-dashoffset: 440;
+        transition: stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .gauge-label {
+        position: absolute;
+        text-align: center;
+    }
+
+    .gauge-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        display: block;
+        color: var(--text-dark);
+        line-height: 1;
+    }
+
+    .gauge-text {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    .loading-screen {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        z-index: 2000;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .heatmap-preview {
+        border-radius: 16px;
+        border: 4px solid white;
+        box-shadow: var(--shadow-md);
+        width: 100%;
+    }
+
+    .upload-zone {
+        border: 2px dashed var(--border-soft);
+        border-radius: 30px;
+        padding: 80px 40px;
+        background: var(--bg-surface);
+        transition: all 0.3s;
+        text-align: center;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 300px;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .upload-zone:hover {
+        border-color: var(--accent-blue);
+        background: white;
+        transform: scale(1.01);
+    }
+
+    .upload-icon {
+        font-size: 4rem;
+        color: var(--accent-blue);
+        margin-bottom: 1.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="analysis-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 animated">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-primary rounded-circle p-2 me-3 shadow-sm">
+                        <i class="fa-solid fa-microchip text-white"></i>
+                    </div>
+                    <h2 class="fw-bold mb-0">Diagnostic Engine</h2>
+                </div>
+
+                <div class="card-premium p-5 mb-4">
+                    <form id="upload-form">
+                        <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+                            <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                            <h4 class="fw-bold">Upload Lesion Specimen</h4>
+                            <p class="text-muted mb-0">Drag and drop high-resolution dermatoscopy image or browse files
+                            </p>
+                            <input type="file" id="file-input" name="file" accept="image/*" style="display: none;">
+                        </div>
+                    </form>
+
+                    <div id="preview-container" class="mt-4 text-center" style="display: none;">
+                        <div class="scanner-box" id="scanner-box">
+                            <div id="scanner-laser" class="scanner-laser"></div>
+                            <img id="image-preview" src="" alt="Preview" class="img-fluid">
+                        </div>
+                        <div class="mt-4 d-flex justify-content-center gap-2">
+                            <button type="button" class="btn btn-outline-secondary" id="btn-cancel">Reset</button>
+                            <button type="button" class="btn btn-primary px-5" id="btn-analyze">
+                                <i class="fa-solid fa-play me-2"></i>Initiate Analysis
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="result-section" class="result-card animated">
+                    <div class="risk-banner shadow-md" id="risk-banner"></div>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="card-premium h-100">
+                                <h5 class="fw-bold mb-4 text-muted border-bottom pb-2">PROBABILITY SCORE</h5>
+                                <div class="confidence-gauge">
+                                    <svg class="gauge-svg" viewBox="0 0 160 160">
+                                        <circle class="gauge-bg" cx="80" cy="80" r="70"></circle>
+                                        <circle id="confidence-fill" class="gauge-fill" cx="80" cy="80" r="70"></circle>
+                                    </svg>
+                                    <div class="gauge-label">
+                                        <span class="gauge-value" id="confidence-percent">0%</span>
+                                        <span class="gauge-text">Confidence</span>
+                                    </div>
+                                </div>
+                                <div id="prob-bars"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="premium-card h-100 text-center">
+                                <h5 class="fw-bold mb-4 text-muted border-bottom pb-2">ATTENTION HEATMAP</h5>
+                                <img id="heatmap-preview" class="heatmap-preview mb-3" src="" alt="Grad-CAM">
+                                <div class="alert alert-light border-0 small text-center mb-0">
+                                    <i class="fa-solid fa-info-circle me-1"></i>
+                                    Visual mapping of neural activation regions.
+                                </div>
+                                <button id="btn-pdf" class="btn btn-outline-danger w-100 mt-4 fw-bold">
+                                    <i class="fa-solid fa-file-export me-2"></i>Export Clinical PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading-screen" id="loading">
+    <div class="spinner-grow text-primary" style="width: 4rem; height: 4rem;" role="status"></div>
+    <h4 class="mt-4 fw-bold">Analyzing Specimen</h4>
+    <p class="text-muted" id="loading-status">Executing robust visual ensemble (V4.2)</p>
+</div>
+
+
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const previewContainer = document.getElementById('preview-container');
+    const imagePreview = document.getElementById('image-preview');
+    const btnCancel = document.getElementById('btn-cancel');
+    const btnAnalyze = document.getElementById('btn-analyze');
+    const loading = document.getElementById('loading');
+    const resultSection = document.getElementById('result-section');
+
+    let currentSessionId = null;
+    let lastPredictions = [];
+
+    // Drag and drop handlers
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+    });
+
+    dropZone.addEventListener('drop', handleDrop, false);
+    fileInput.addEventListener('change', handleFileSelect, false);
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+    }
+
+    function handleFileSelect(e) {
+        const files = e.target.files;
+        handleFiles(files);
+    }
+
+    function handleFiles(files) {
+        if (files.length > 0) {
+            const file = files[0];
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagePreview.src = e.target.result;
+                    dropZone.style.display = 'none';
+                    previewContainer.style.display = 'block';
+                    document.getElementById('scanner-box').style.display = 'block';
+                    resultSection.style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+                // Assign file to input if dropped
+                if (fileInput.files.length === 0) {
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    fileInput.files = dataTransfer.files;
+                }
+            } else {
+                alert("Please upload an image file.");
+            }
+        }
+    }
+
+    btnCancel.addEventListener('click', () => {
+        fileInput.value = '';
+        dropZone.style.display = 'block';
+        previewContainer.style.display = 'none';
+        resultSection.style.display = 'none';
+    });
+
+    btnAnalyze.addEventListener('click', () => {
+        if (!fileInput.files || fileInput.files.length === 0) return;
+
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        loading.style.display = 'flex';
+        document.getElementById('scanner-laser').style.display = 'block';
+
+        const statuses = [
+            "Initializing thermal analysis...",
+            "Detecting micro-vascular patterns...",
+            "Mapping cellular irregularity...",
+            "Cross-referencing clinical markers...",
+            "Computing malignancy coefficient...",
+            "Compiling diagnostic summary..."
+        ];
+
+        let statusIdx = 0;
+        const statusElement = document.getElementById('loading-status');
+        const statusInterval = setInterval(() => {
+            statusIdx = (statusIdx + 1) % statuses.length;
+            statusElement.style.opacity = '0';
+            setTimeout(() => {
+                statusElement.innerText = statuses[statusIdx];
+                statusElement.style.opacity = '1';
+            }, 300);
+        }, 1500);
+
+        fetch('/predict', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw err });
+                }
+                return response.json();
+            })
+            .then(data => {
+                clearInterval(statusInterval);
+                loading.style.display = 'none';
+                document.getElementById('scanner-laser').style.display = 'none';
+
+                renderResults(data);
+            })
+            .catch(error => {
+                clearInterval(statusInterval);
+                loading.style.display = 'none';
+                document.getElementById('scanner-laser').style.display = 'none';
+
+                if (error.is_skin_failure) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Invalid Specimen',
+                        text: error.error,
+                        confirmButtonColor: 'var(--accent-blue)'
+                    });
+                } else {
+                    console.error('Error:', error);
+                    alert(error.error || "An error occurred during analysis.");
+                }
+            });
+    });
+
+    function renderResults(data) {
+        currentSessionId = data.session_id;
+        lastPredictions = data.predictions;
+        document.getElementById('heatmap-preview').src = data.heatmap_url;
+
+        const topPred = data.predictions[0];
+        const riskBanner = document.getElementById('risk-banner');
+
+        // Update Gauge
+        const fill = document.getElementById('confidence-fill');
+        const percentText = document.getElementById('confidence-percent');
+        const radius = 70;
+        const circumference = 2 * Math.PI * radius;
+
+        // Reset Gauge first
+        fill.style.strokeDashoffset = circumference;
+        percentText.innerText = '0%';
+
+        // Animate Gauge
+        setTimeout(() => {
+            const offset = circumference - (topPred.probability / 100) * circumference;
+            fill.style.strokeDashoffset = offset;
+
+            // Animate percentage text
+            let current = 0;
+            const target = Math.round(topPred.probability);
+            const duration = 2000;
+            const startTime = performance.now();
+
+            function updateText(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+                current = Math.floor(eased * target);
+                percentText.innerText = current + '%';
+                if (progress < 1) requestAnimationFrame(updateText);
+            }
+            requestAnimationFrame(updateText);
+        }, 100);
+
+        // Define Risk Levels and Palette
+        const palette = {
+            'melanoma': '#be123c',
+            'scc': '#a16207',
+            'bcc': '#1d4ed8',
+            'benign': '#15803d'
+        };
+
+        fill.style.stroke = palette[topPred.class] || '#1d4ed8';
+
+        if (topPred.class === 'benign') {
+            riskBanner.className = 'risk-banner risk-low animated shadow-md';
+            riskBanner.innerHTML = `<i class="fa-solid fa-shield-check me-2"></i> ${topPred.class.toUpperCase()}: NEGATIVE`;
+        } else if (topPred.class === 'melanoma') {
+            riskBanner.className = 'risk-banner risk-high animated shadow-md';
+            riskBanner.innerHTML = `<i class="fa-solid fa-triangle-exclamation me-2"></i> ${topPred.class.toUpperCase()}: MALIGNANT`;
+        } else {
+            riskBanner.className = 'risk-banner risk-medium animated shadow-md';
+            riskBanner.innerHTML = `<i class="fa-solid fa-circle-exclamation me-2"></i> ${topPred.class.toUpperCase()}: CAUTIONARY`;
+        }
+
+        const probBars = document.getElementById('prob-bars');
+        probBars.innerHTML = '';
+
+        data.predictions.forEach(p => {
+            const val = p.probability.toFixed(1);
+            const color = palette[p.class] || '#1d4ed8';
+            const html = `
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1 small fw-bold text-uppercase" style="letter-spacing: 0.5px;">
+                        <span class="text-muted">${p.class}</span>
+                        <span style="color: ${color}">${val}%</span>
+                    </div>
+                    <div class="progress shadow-none">
+                        <div class="progress-bar" role="progressbar" style="width: ${val}%; background-color: ${color}"></div>
+                    </div>
+                </div>
+            `;
+            probBars.innerHTML += html;
+        });
+
+        resultSection.style.display = 'block';
+        resultSection.classList.add('animated');
+        resultSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.getElementById('btn-pdf').addEventListener('click', () => {
+        if (!currentSessionId) return;
+
+        fetch(`/download_report/${currentSessionId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                predictions: lastPredictions
+            })
+        })
+            .then(response => {
+                if (!response.ok) throw new Error("Report generation failed");
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `Medical_Report_${currentSessionId.substring(0, 8)}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+                console.error(error);
+                alert("Error downloading report.");
+            });
+    });
+</script>
+{% endblock %}

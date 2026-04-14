@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="section-padding bg-surface" style="min-height: calc(100vh - 160px);">
+    <div class="container">
+        <div class="row mb-5 animated">
+            <div class="col-12">
+                <div class="badge bg-soft text-primary mb-3 px-3 py-2 rounded-pill fw-bold">PATIENT PORTAL</div>
+                <h1 class="display-4 mb-1">Health Dashboard</h1>
+                <p class="text-muted fs-5">Welcome back, <span class="text-primary fw-bold">{{ session.get('username')
+                        }}</span>. Monitoring your dermatological wellness.</p>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <!-- New Scan Card -->
+            <div class="col-md-4 animated" style="animation-delay: 0.1s;">
+                <div class="card-premium h-100 p-4" style="border-top: 5px solid var(--accent-blue);">
+                    <div class="icon-box mb-4 shadow-sm"
+                        style="color: var(--accent-blue); background: var(--accent-blue-soft);">
+                        <i class="fa-solid fa-plus-circle"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">New Scan</h3>
+                    <p class="text-muted mb-4 small">Submit a new high-resolution specimen for immediate neural network
+                        classification and risk assessment.</p>
+                    <a href="{{ url_for('analysis') }}" class="btn btn-primary w-100 py-3 fw-bold">
+                        <i class="fa-solid fa-camera me-2"></i>Initialize Scan
+                    </a>
+                </div>
+            </div>
+
+            <!-- History Card -->
+            <div class="col-md-4 animated" style="animation-delay: 0.2s;">
+                <div class="card-premium h-100 p-4" style="border-top: 5px solid var(--success-emerald);">
+                    <div class="icon-box mb-4 shadow-sm" style="color: var(--success-emerald); background: #ecfdf5;">
+                        <i class="fa-solid fa-folder-tree"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">Record Archive</h3>
+                    <p class="text-muted mb-4 small">Review longitudinal data, tracked progress of lesion observations,
+                        and historical diagnostic outcomes.</p>
+                    <a href="{{ url_for('history_page') }}" class="btn btn-outline-success w-100 py-3 fw-bold">
+                        <i class="fa-solid fa-database me-2"></i>Access Archive
+                    </a>
+                </div>
+            </div>
+
+            <!-- Preferences Card -->
+            <div class="col-md-4 animated" style="animation-delay: 0.3s;">
+                <div class="card-premium h-100 p-4" style="border-top: 5px solid var(--warning-amber);">
+                    <div class="icon-box mb-4 shadow-sm" style="color: var(--warning-amber); background: #fffbeb;">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">Preferences</h3>
+                    <p class="text-muted mb-4 small">Manage your clinical profile, security credentials, and data
+                        privacy preferences for your account.</p>
+                    <a href="{{ url_for('settings') }}" class="btn btn-outline-warning w-100 py-3 fw-bold text-dark">
+                        <i class="fa-solid fa-user-gear me-2"></i>Manage Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Wellness Journal -->
+            <div class="col-md-4 animated" style="animation-delay: 0.4s;">
+                <div class="card-premium h-100 p-4" style="border-top: 5px solid #a855f7;">
+                    <div class="icon-box mb-4 shadow-sm" style="color: #a855f7; background: #f5f3ff;">
+                        <i class="fa-solid fa-book-medical"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Wellness Journal</h5>
+                    <p class="text-muted mb-4 x-small">Document localized symptoms like itching, color changes, or
+                        bleeding for clinical context.</p>
+                    <a href="{{ url_for('wellness') }}" class="btn btn-sm btn-outline-primary w-100 py-2">
+                        Open Journal
+                    </a>
+                </div>
+            </div>
+
+            <!-- Medical Library -->
+            <div class="col-md-4 animated" style="animation-delay: 0.5s;">
+                <div class="card-premium h-100 p-4" style="border-top: 5px solid #0ea5e9;">
+                    <div class="icon-box mb-4 shadow-sm" style="color: #0ea5e9; background: #f0f9ff;">
+                        <i class="fa-solid fa-book-open-reader"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Medical Library</h5>
+                    <p class="text-muted mb-4 x-small">Explore peer-reviewed dermatological education and diagnostic
+                        terminology guides.</p>
+                    <a href="{{ url_for('library') }}" class="btn btn-sm btn-outline-info w-100 py-2">
+                        Browse Library
+                    </a>
+                </div>
+            </div>
+
+            <!-- Global Report -->
+            <div class="col-md-4 animated" style="animation-delay: 0.7s;">
+                <div class="card-premium h-100 p-4" style="border-top: 5px solid #6366f1;">
+                    <div class="icon-box mb-4 shadow-sm" style="color: #6366f1; background: #eef2ff;">
+                        <i class="fa-solid fa-file-export"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Health Export</h5>
+                    <p class="text-muted mb-4 x-small">Generate a comprehensive clinical summary of all your records in
+                        a single document.</p>
+                    <a href="{{ url_for('export_history') }}" class="btn btn-sm btn-outline-primary w-100 py-2">
+                        Export Summary
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

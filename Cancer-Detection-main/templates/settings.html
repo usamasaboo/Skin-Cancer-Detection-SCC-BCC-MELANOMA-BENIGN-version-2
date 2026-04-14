@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="section-padding bg-surface" style="min-height: calc(100vh - 160px);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 animated">
+                <div class="d-flex align-items-center mb-5">
+                    <div class="bg-primary rounded-circle p-2 me-3 shadow-sm">
+                        <i class="fa-solid fa-user-shield text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="display-4 mb-0">Clinical Profile</h1>
+                        <p class="text-muted small mb-0">Manage your identity and security protocols</p>
+                    </div>
+                </div>
+
+                <div class="card-premium p-5 mb-4">
+                    <h5 class="fw-bold border-bottom pb-3 mb-4">
+                        <i class="fa-solid fa-id-card me-2 text-primary"></i>
+                        Identity Attributes
+                    </h5>
+
+                    <div class="mb-4">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control bg-light border-0 fw-bold"
+                            value="{{ session.get('username') }}" readonly>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Security Role</label>
+                        <input type="text" class="form-control bg-light border-0 text-uppercase fw-bold"
+                            value="{{ session.get('role') }}" readonly>
+                    </div>
+                </div>
+
+                <div class="card-premium p-5">
+                    <h5 class="fw-bold border-bottom pb-3 mb-4">
+                        <i class="fa-solid fa-key me-2 text-danger"></i>
+                        Security Protocols
+                    </h5>
+
+                    <form action="{{ url_for('reset_password') }}" method="POST" class="mb-4">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">New Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i
+                                        class="fa-solid fa-lock text-muted"></i></span>
+                                <input type="password" name="new_password" class="form-control bg-light border-0"
+                                    placeholder="Enter new password" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-outline-danger w-100 py-3 fw-bold">
+                            <i class="fa-solid fa-rotate me-2"></i>Update Security Credentials
+                        </button>
+                    </form>
+
+                    <div class="text-center pt-3 border-top">
+                        <a href="{{ url_for('logout') }}" class="text-muted text-decoration-none small fw-bold">
+                            <i class="fa-solid fa-right-from-bracket me-2"></i>Terminate Active Session
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

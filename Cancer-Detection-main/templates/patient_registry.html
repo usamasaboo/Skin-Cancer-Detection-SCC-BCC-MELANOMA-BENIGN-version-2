@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="section-padding bg-surface">
+    <div class="container">
+        <div class="row mb-5 animated">
+            <div class="col-12 text-center">
+                <div class="badge bg-soft text-success mb-3 px-3 py-2 rounded-pill fw-bold">CLINICAL DATABASE</div>
+                <h1 class="display-4 fw-bold">Patient Registry</h1>
+                <p class="text-muted lead max-w-600 mx-auto">Comprehensive oversight of all registered clinical users
+                    and their longitudinal diagnostic status.</p>
+            </div>
+        </div>
+
+        <div class="row mb-4 animated">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="text-start">
+                    <h5 class="fw-bold mb-0">Registered Patient Statistics</h5>
+                    <p class="x-small text-muted mb-0">Showing comprehensive diagnostic history for all clinical users.
+                    </p>
+                </div>
+                <div class="d-flex gap-2">
+                    <form action="{{ url_for('clear_all_history') }}" method="POST"
+                        onsubmit="return confirm('CRITICAL WARNING: This will permanently erase ALL clinical diagnostic history for ALL patients. This action is IRREVERSIBLE. Proceed?');">
+                        <button type="submit" class="btn btn-outline-danger btn-sm px-4 rounded-pill fw-bold">
+                            <i class="fa-solid fa-radiation me-2"></i>Wipe All Clinical Data
+                        </button>
+                    </form>
+                    <a href="{{ url_for('export_registry') }}" class="btn btn-success btn-sm px-4 rounded-pill fw-bold">
+                        <i class="fa-solid fa-file-csv me-2"></i>Export Clinical Registry
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-premium p-0 overflow-hidden animated shadow-sm border-0">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0"
+                    style="table-layout: fixed; width: 100%; border-collapse: collapse;">
+                    <thead class="bg-light">
+                        <tr class="x-small fw-bold text-muted text-uppercase text-nowrap">
+                            <th class="px-4 py-3" style="width: 120px;">Patient ID</th>
+                            <th class="py-3" style="width: 250px;">Name</th>
+                            <th class="py-3 text-center" style="width: 160px;">Regist. Date / Scan Date</th>
+                            <th class="py-3 text-center" style="width: 140px;">Count / Conf.</th>
+                            <th class="py-3 text-center" style="width: 200px;">Status / Prediction</th>
+                            <th class="py-3" style="width: 200px;">Primary Concern</th>
+                            <th class="px-4 py-3 text-end" style="width: 150px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if not patients %}
+                        <tr>
+                            <td colspan="7" class="text-center py-5 text-muted">No registered patients found in clinical
+                                database.</td>
+                        </tr>
+                        {% endif %}
+                        {% for patient in patients %}
+                        <!-- Main Patient Row -->
+                        <tr class="bg-white border-bottom text-nowrap">
+                            <td class="px-4 fw-bold text-primary">USR-{{ "%04d" % patient.id }}</td>
+                            <td>
+                                <div class="text-truncate fw-bold" style="max-width: 230px;"
+                                    title="{{ patient.username }}">
+                                    {{ patient.username }}
+                                </div>
+                            </td>
+                            <td class="small text-center text-muted">{{ patient.created_at[:10] }}</td>
+                            <td class="small text-center fw-bold text-primary">{{ patient.scan_count }}</td>
+                            <td class="text-center">
+                                {% if patient.last_prediction %}
+                                <span
+                                    class="badge rounded-pill px-3 py-1 x-small 
+                                    {% if 'melanoma' in patient.last_prediction.lower() %}bg-danger{% elif 'scc' in patient.last_prediction.lower() %}bg-warning text-dark{% elif 'bcc' in patient.last_prediction.lower() %}bg-primary{% else %}bg-success{% endif %}">
+                                    {{ patient.last_prediction | upper }}
+                                    {% if patient.last_confidence %}({{ "%.1f" % (patient.last_confidence * 100) }}%){%
+                                    endif %}
+                                </span>
+                                {% else %}
+                                <span class="badge bg-light text-muted rounded-pill px-3 py-1 x-small">NO SCANS</span>
+                                {% endif %}
+                            </td>
+                            <td class="x-small text-muted">
+                                <div class="text-truncate" style="max-width: 180px;"
+                                    title="{{ patient.last_concern or 'Normal Assessment' }}">
+                                    {{ patient.last_concern or 'Normal Assessment' }}
+                                </div>
+                            </td>
+                            <td class="px-4 text-end">
+                                <button class="btn btn-sm btn-outline-primary px-3 rounded-pill" data-bs-toggle="modal"
+                                    data-bs-target="#patientModal{{ patient.id }}">View Dossier</button>
+                            </td>
+                        </tr>
+
+                        <!-- Scan History Sub-Header Row (Mapped to Grid) -->
+                        {% if patient.history.scans %}
+                        <tr class="x-small fw-bold text-muted text-uppercase text-nowrap"
+                            style="background-color: #f8fafc;">
+                            <td class="px-4 py-1">SCAN ID</td>
+                            <td class="py-1"></td>
+                            <td class="py-1 text-center">SCAN DATE</td>
+                            <td class="py-1 text-center">CONFIDENCE</td>
+                            <td class="py-1 text-center">PREDICTION</td>
+                            <td class="py-1" colspan="2"></td>
+                        </tr>
+                        {% for scan in patient.history.scans %}
+                        <!-- Scan Data Row (Strict Grid Alignment) -->
+                        <tr class="x-small border-bottom text-nowrap">
+                            <td class="px-4 py-2 text-muted">SCN-{{ scan.id }}</td>
+                            <td class="py-2"></td>
+                            <td class="py-2 text-center text-muted">{{ scan.timestamp[:16] }}</td>
+                            <td class="py-2 text-center fw-bold text-primary">{{ "%.1f" % (scan.confidence * 100) }}%
+                            </td>
+                            <td class="py-2 text-center">
+                                <span
+                                    class="fw-bold text-{% if 'mel' in scan.prediction.lower() %}danger{% elif 'scc' in scan.prediction.lower() %}warning{% else %}success{% endif %}">
+                                    {{ scan.prediction | upper }}
+                                </span>
+                            </td>
+                            <td class="py-2 px-4 text-end" colspan="2">
+                                <form action="{{ url_for('delete_record', record_id=scan.id) }}" method="POST"
+                                    onsubmit="return confirm('Purge this specific clinical record?');"
+                                    style="display: inline;">
+                                    <button type="submit" class="btn btn-link text-danger p-0 border-0"
+                                        title="Delete Scan Record">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Dossier Modals (Moved Outside Table for Structural Integrity) -->
+        {% for patient in patients %}
+        <div class="modal fade" id="patientModal{{ patient.id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content rounded-4 border-0 shadow-lg">
+                    <div class="modal-header border-0 p-4 bg-surface">
+                        <h5 class="modal-title fw-bold text-primary">Clinical Dossier: {{ patient.username }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4 pt-4">
+                        <div class="row g-4">
+                            <div class="col-lg-4">
+                                <div class="p-4 bg-light rounded-4 text-center h-100">
+                                    <div class="rounded-circle bg-white d-flex align-items-center justify-content-center mx-auto mb-3 shadow-sm"
+                                        style="width: 80px; height: 80px;">
+                                        <i class="fa-solid fa-user-doctor-hair text-primary h1 mb-0"></i>
+                                    </div>
+                                    <h6 class="fw-bold mb-1">{{ patient.username }}</h6>
+                                    <span class="badge bg-primary-soft text-primary x-small mb-3">ID: USR-{{ "%04d" %
+                                        patient.id }}</span>
+
+                                    <div class="text-start mt-3">
+                                        <label class="x-small text-muted text-uppercase fw-bold">Account Created</label>
+                                        <p class="small fw-bold">{{ patient.created_at }}</p>
+
+                                        <label class="x-small text-muted text-uppercase fw-bold mt-2">Latest
+                                            Assessment</label>
+                                        <p class="small fw-bold">{{ patient.last_scan_date or 'None' }}</p>
+
+                                        <label class="x-small text-muted text-uppercase fw-bold mt-2">Notes from
+                                            Registry</label>
+                                        <p class="x-small text-muted">{{ patient.last_note or 'No recent clinical notes
+                                            provided.' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <ul class="nav nav-pills mb-3 gap-2" role="tablist">
+                                    <li class="nav-item">
+                                        <button class="nav-link active rounded-pill px-4 x-small fw-bold"
+                                            data-bs-toggle="pill" data-bs-target="#scan-history-{{ patient.id }}"
+                                            type="button">Scan History</button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button class="nav-link rounded-pill px-4 x-small fw-bold" data-bs-toggle="pill"
+                                            data-bs-target="#wellness-logs-{{ patient.id }}" type="button">Wellness
+                                            Logs</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="scan-history-{{ patient.id }}">
+                                        <div class="table-responsive" style="max-height: 400px;">
+                                            <table class="table table-sm x-small align-middle mb-0">
+                                                <thead class="table-light sticky-top">
+                                                    <tr class="text-nowrap fw-bold text-uppercase">
+                                                        <th style="width: 140px;">Date</th>
+                                                        <th>Prediction</th>
+                                                        <th style="width: 110px;">Confidence</th>
+                                                        <th class="text-end" style="width: 120px;">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for scan in patient.history.scans %}
+                                                    <tr>
+                                                        <td>{{ scan.timestamp[:16] }}</td>
+                                                        <td><span
+                                                                class="fw-bold text-{% if 'mel' in scan.prediction.lower() %}danger{% elif 'scc' in scan.prediction.lower() %}warning{% else %}success{% endif %}">{{
+                                                                scan.prediction | upper }}</span></td>
+                                                        <td>{{ "%.1f" % (scan.confidence * 100) }}%</td>
+                                                        <td class="text-end">
+                                                            <form
+                                                                action="{{ url_for('delete_record', record_id=scan.id) }}"
+                                                                method="POST"
+                                                                onsubmit="return confirm('Purge this clinical record?');"
+                                                                style="display: inline;">
+                                                                <button type="submit"
+                                                                    class="btn btn-xs btn-outline-danger rounded-pill">
+                                                                    <i class="fa-solid fa-trash me-1"></i>Delete
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    {% else %}
+                                                    <tr>
+                                                        <td colspan="4" class="text-center py-4">No scan records found.
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="wellness-logs-{{ patient.id }}">
+                                        <div class="table-responsive" style="max-height: 400px;">
+                                            <table class="table table-sm x-small align-middle">
+                                                <thead class="table-light sticky-top">
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Location</th>
+                                                        <th>Symptoms</th>
+                                                        <th>Changes</th>
+                                                        <th>Notes</th>
+                                                        <th class="text-end">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for log in patient.history.wellness %}
+                                                    <tr>
+                                                        <td>{{ log.date }}</td>
+                                                        <td class="fw-bold">{{ log.location }}</td>
+                                                        <td>{% if log.itching %}Itch{% endif %} {% if log.pain %}Pain{%
+                                                            endif %} {% if log.bleeding %}Bled{% endif %}</td>
+                                                        <td>{% if log.size_change != 'None' %}Size: {{ log.size_change
+                                                            }}{% endif %} {% if log.color_change %}Color Change{% endif
+                                                            %}</td>
+                                                        <td class="text-muted">{{ log.notes | truncate(25) }}</td>
+                                                        <td class="text-end">
+                                                            <form
+                                                                action="{{ url_for('delete_wellness', entry_id=log.id) }}"
+                                                                method="POST"
+                                                                onsubmit="return confirm('Purge this wellness journal entry?');"
+                                                                style="display: inline;">
+                                                                <button type="submit"
+                                                                    class="btn btn-xs btn-outline-danger rounded-pill">
+                                                                    <i class="fa-solid fa-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    {% else %}
+                                                    <tr>
+                                                        <td colspan="6" class="text-center py-4">No wellness logs found.
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 p-4 bg-surface rounded-bottom-4">
+                        <form action="{{ url_for('clear_patient_history', user_id=patient.id) }}" method="POST"
+                            onsubmit="return confirm('Erase diagnostic history for this patient? This action is permanent.');"
+                            class="me-auto">
+                            <button type="submit" class="btn btn-outline-danger px-4 rounded-pill fw-bold btn-sm">
+                                <i class="fa-solid fa-eraser me-2"></i>Clear History
+                            </button>
+                        </form>
+                        <button type="button" class="btn btn-outline-secondary px-4 rounded-pill fw-bold"
+                            data-bs-dismiss="modal">Close</button>
+                        <a href="{{ url_for('download_dossier', user_id=patient.id) }}"
+                            class="btn btn-primary px-4 rounded-pill fw-bold">
+                            <i class="fa-solid fa-file-pdf me-2"></i>Download Dossier (PDF)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="text-center mt-5">
+    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary px-5 py-2 rounded-pill fw-bold">
+        <i class="fa-solid fa-arrow-left me-2"></i>Return to Dashboard
+    </a>
+</div>
+</div>
+</div>
+{% endblock %}

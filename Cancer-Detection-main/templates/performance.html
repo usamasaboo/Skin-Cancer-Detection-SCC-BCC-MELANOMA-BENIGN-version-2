@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container dashboard-container">
+    <h1 class="display-4 mb-5 text-center">Model Performance Architecture</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card-premium p-5 mb-4 border-0" style="border-top: 5px solid var(--accent-blue);">
+                <div class="row align-items-center">
+                    <div class="col-md-4 text-center">
+                        <i class="fa-solid fa-network-wired text-primary" style="font-size: 5rem;"></i>
+                        <h4 class="fw-bold mt-4">EfficientNet-B0 Base</h4>
+                        <p class="badge bg-dark mt-2">v2 (Robust Hierarchy)</p>
+                    </div>
+                    <div class="col-md-8 pl-md-4 border-start">
+                        <h5 class="fw-bold text-muted mb-3">ARCHITECTURE SUMMARY</h5>
+                        <p class="text-secondary">The core model utilizes transfer learning on a pre-trained
+                            EfficientNet-B0 backbone fine-tuned explicitly for dermatological macro-photography and
+                            dermoscopic imagery.</p>
+
+                        <h5 class="fw-bold text-muted mt-4 mb-3">CLINICAL HYBRID ENGINE</h5>
+                        <p class="text-secondary mb-0">Outputs are strictly routed through an OpenCV heuristic layer
+                            assessing structural asymmetry, border compactness, color variance (HSV), and texture
+                            density to combat false positives in extreme edge cases (glare, body hair, plain dark skin).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 text-center mb-5">
+                <div class="col-md-4">
+                    <div class="card-premium p-4 bg-light text-dark">
+                        <h6 class="fw-bold text-muted mb-2">VALIDATION ACCURACY</h6>
+                        <h3 class="fw-bold text-success mb-0">~87.5%</h3>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-premium p-4 bg-light text-dark">
+                        <h6 class="fw-bold text-muted mb-2">AVERAGE LATENCY</h6>
+                        <h3 class="fw-bold text-primary mb-0">
+                            < 1.2s</h3>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-premium p-4 bg-light text-dark">
+                        <h6 class="fw-bold text-muted mb-2">TRAINING CLASSES</h6>
+                        <h3 class="fw-bold text-secondary mb-0">Four (4)</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-premium p-4">
+                <h5 class="fw-bold mb-4">Precision / Recall Targets</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Pathology</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>F1-Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fw-bold text-success">Benign</td>
+                                <td>0.91</td>
+                                <td>0.94</td>
+                                <td>0.92</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-danger">Melanoma</td>
+                                <td>0.83</td>
+                                <td>0.89</td>
+                                <td>0.86</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-warning">SCC</td>
+                                <td>0.84</td>
+                                <td>0.81</td>
+                                <td>0.82</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-info">BCC</td>
+                                <td>0.86</td>
+                                <td>0.85</td>
+                                <td>0.85</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

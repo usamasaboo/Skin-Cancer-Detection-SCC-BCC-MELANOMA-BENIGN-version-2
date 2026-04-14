@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+    .history-container {
+        padding: 40px 0;
+        background-color: var(--bg-surface);
+        min-height: calc(100vh - 160px);
+    }
+
+    .skeleton {
+        background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 8px;
+        height: 12px;
+        width: 100%;
+        display: inline-block;
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: -200% 0;
+        }
+
+        100% {
+            background-position: 200% 0;
+        }
+    }
+
+    .history-card {
+        background: white;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .table thead th {
+        background-color: #f8fafc;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-muted);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        padding: 1.25rem 1.5rem;
+    }
+
+    .table tbody td {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.9rem;
+    }
+
+    .table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 80px 40px;
+    }
+
+    .empty-icon {
+        background: var(--bg-surface);
+        color: var(--text-muted);
+        width: 80px;
+        height: 80px;
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 1.5rem;
+    }
+
+    .prediction-badge {
+        padding: 6px 12px;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        letter-spacing: 0.02em;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="history-container">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4 animated">
+            <div>
+                <div class="badge bg-soft text-primary mb-2 px-3 py-2 rounded-pill fw-bold" style="font-size: 0.7rem;">
+                    DATABASE v4.2</div>
+                <h1 class="display-4 mb-1">Clinical History</h1>
+                <p class="text-muted mb-0">Secure longitudinal tracking of previous analyses.</p>
+            </div>
+            <div class="d-flex gap-2">
+                <form
+                    action="{{ url_for('clear_all_history') if session.role == 'admin' else url_for('clear_patient_history', user_id=session.user_id) }}"
+                    method="POST"
+                    onsubmit="return confirm('Securely purge all clinical records from this view? This action is permanent.');">
+                    <button type="submit" class="btn btn-outline-danger px-4 py-2 shadow-sm">
+                        <i class="fa-solid fa-trash-can me-2"></i>{{ 'Global Purge' if session.role == 'admin' else
+                        'Clear All History' }}
+                    </button>
+                </form>
+                <a href="{{ url_for('analysis') }}" class="btn btn-primary px-4 py-2 shadow-sm">
+                    <i class="fa-solid fa-plus me-2"></i>New Analysis
+                </a>
+            </div>
+        </div>
+
+        <div class="card-premium animated">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>SPECIMEN IDENTIFIER</th>
+                            <th>TIMESTAMP</th>
+                            <th>AI DIAGNOSIS</th>
+                            <th>CONFIDENCE</th>
+                            <th class="text-end">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <!-- Content injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetchHistory();
+    });
+
+    function fetchHistory() {
+        const tbody = document.getElementById('historyTableBody');
+
+        // Inject Skeleton Rows
+        tbody.innerHTML = Array(5).fill(0).map(() => `
+            <tr>
+                <td><div class="skeleton" style="width: 140px;"></div></td>
+                <td><div class="skeleton" style="width: 120px;"></div></td>
+                <td><div class="skeleton" style="width: 100px;"></div></td>
+                <td><div class="skeleton" style="width: 80px;"></div></td>
+                <td class="text-end"><div class="skeleton" style="width: 100px; float: right;"></div></td>
+            </tr>
+        `).join('');
+
+        fetch('/history')
+            .then(response => response.json())
+            .then(data => {
+                tbody.innerHTML = '';
+
+                if (data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="p-0 border-0">
+                                <div class="empty-state">
+                                    <div class="empty-icon"><i class="fa-solid fa-folder-open"></i></div>
+                                    <h5 class="fw-bold mb-2">No Records Found</h5>
+                                    <p class="text-muted mb-4 small">Your clinical analysis history will appear here.</p>
+                                    <a href="/analysis" class="btn btn-primary px-5">Initiate First Scan</a>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                data.forEach(item => {
+                    const palette = {
+                        'melanoma': { bg: '#be123c', text: 'white' },
+                        'scc': { bg: '#a16207', text: 'white' },
+                        'bcc': { bg: '#1d4ed8', text: 'white' },
+                        'benign': { bg: '#15803d', text: 'white' }
+                    };
+
+                    const style = palette[item.prediction.toLowerCase()] || { bg: '#64748b', text: 'white' };
+                    const timeStr = new Date(item.timestamp).toLocaleString();
+
+                    const row = `
+                        <tr>
+                            <td class="fw-bold text-dark">
+                                <i class="fa-solid fa-file-medical text-primary me-2 opacity-50"></i> 
+                                ${item.image_name}
+                            </td>
+                            <td class="text-muted">${timeStr}</td>
+                            <td>
+                                <span class="prediction-badge text-uppercase" style="background-color: ${style.bg}; color: ${style.text}">
+                                    ${item.prediction}
+                                </span>
+                            </td>
+                            <td class="fw-bold text-primary">${item.confidence}</td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="/report/${item.id}" class="btn btn-sm btn-outline-primary px-3 rounded-pill fw-bold">
+                                        <i class="fa-solid fa-circle-info me-1"></i> Details
+                                    </a>
+                                    <form action="/delete_record/${item.id}" method="POST" onsubmit="return confirm('Purge this specific clinical record?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger px-2 rounded-pill fw-bold">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching history:', error);
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center py-5 text-danger fw-bold">System Connection Failure.</td></tr>';
+            });
+    }
+</script>
+{% endblock %}

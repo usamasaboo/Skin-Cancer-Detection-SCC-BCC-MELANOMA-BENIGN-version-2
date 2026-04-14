@@ -1,0 +1,398 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+    .hero-gradient {
+        background: radial-gradient(140% 140% at 50% 0%, #ffffff 0%, #f0f7ff 50%, #e0f0ff 100%);
+        padding: 120px 0 80px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-gradient::before {
+        content: '';
+        position: absolute;
+        top: -10%;
+        right: -10%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, transparent 70%);
+        filter: blur(60px);
+        z-index: 0;
+    }
+
+    .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: var(--accent-blue-soft);
+        color: var(--accent-blue);
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(37, 99, 235, 0.1);
+    }
+
+    .hero-title {
+        font-size: 4.8rem;
+        font-weight: 800;
+        line-height: 1.05;
+        margin-bottom: 1.5rem;
+        letter-spacing: -0.04em;
+        color: var(--text-primary);
+    }
+
+    .hero-subtitle {
+        font-size: 1.3rem;
+        color: var(--text-muted);
+        margin-bottom: 2.5rem;
+        max-width: 600px;
+        line-height: 1.6;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-premium-lg);
+    }
+
+    .glass-premium {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    .btn-glass {
+        background: rgba(37, 99, 235, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(37, 99, 235, 0.1);
+        color: var(--accent-blue);
+    }
+
+    .btn-glass:hover {
+        background: rgba(37, 99, 235, 0.1);
+        border-color: var(--accent-blue);
+        color: var(--accent-blue);
+    }
+
+    .live-diagnostic-node {
+        padding: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pulse-dot {
+        width: 10px;
+        height: 10px;
+        background: var(--success-emerald);
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+        }
+
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+        }
+
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+        }
+    }
+
+    .icon-feature {
+        width: 60px;
+        height: 60px;
+        background: var(--bg-surface);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: var(--accent-blue);
+        margin-bottom: 1.5rem;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .card-premium:hover .icon-feature {
+        transform: rotate(10deg) scale(1.15);
+        background: var(--accent-blue);
+        color: white;
+    }
+
+    .cta-banner {
+        background: linear-gradient(135deg, var(--navy-blue) 0%, #1e40af 100%);
+        border-radius: var(--radius-lg);
+        padding: 60px 40px;
+        color: white;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .cta-banner::after {
+        content: '\f48b';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        font-size: 20rem;
+        opacity: 0.05;
+        bottom: -100px;
+        right: -50px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero-gradient">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 position-relative z-1 reveal active">
+                <div class="hero-tag">
+                    <i class="fa-solid fa-microscope"></i>
+                    Clinical-Grade Neural Intelligence
+                </div>
+                <h1 class="hero-title">Precision <span class="gradient-text">Skin Cancer</span> Detection.</h1>
+                <p class="hero-subtitle">Harnessing advanced deep learning to provide instant clinical insights for
+                    dermatological analysis. Your partner in early detection and better healthcare outcomes.</p>
+
+                <div class="d-flex flex-wrap gap-3 mb-5">
+                    <a href="{{ url_for('auth') }}" class="btn btn-primary btn-lg px-5 shadow-premium-lg">
+                        Start Patient Analysis <i class="fa-solid fa-arrow-right ms-2"></i>
+                    </a>
+                    <a href="#clinical-grade" class="btn btn-glass btn-lg px-5">
+                        Clinical Accuracy
+                    </a>
+                </div>
+
+                <div class="d-flex gap-5 text-muted fw-semibold">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-success"></i>
+                        <span>98.2% Accuracy</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-primary"></i>
+                        <span>HIPAA Compliant</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5 mt-5 mt-lg-0 reveal active" style="transition-delay: 0.2s;">
+                <div class="glass-card live-diagnostic-node floating">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="mb-0 fw-bold">Live Diagnostic Feed</h5>
+                        <div class="d-flex align-items-center">
+                            <span class="pulse-dot"></span>
+                            <span class="small fw-bold text-success">Active</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface rounded-4 border-dashed p-5 text-center mb-4 position-relative overflow-hidden"
+                        style="background: rgba(255,255,255,0.4) !important;">
+                        <div class="scan-line"></div>
+                        <i class="fa-solid fa-magnifying-glass-chart display-3 text-primary opacity-30 mb-3"></i>
+                        <p class="mb-0 fw-bold text-muted small text-uppercase letter-spacing-wide">System Scanning...
+                        </p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small fw-bold">Melanoma Risk</span>
+                            <span class="fw-bold text-success">0.02%</span>
+                        </div>
+                        <div class="progress" style="height: 10px; border-radius: 100px; background: #f1f5f9;">
+                            <div class="progress-bar bg-success" style="width: 15%; border-radius: 100px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="clinical-grade" class="pt-5 pb-0">
+    <div class="container">
+        <div class="row mb-5 text-center reveal">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-4 mb-4">Clinical Grade Excellence</h2>
+                <p class="text-muted fs-5">Our multi-layer ensemble models provide robust classification across distinct
+                    lesion categories with high sensitivity and explainable outcomes.</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-3 reveal">
+                <div class="card-premium h-100">
+                    <div class="icon-feature" style="color: var(--accent-blue); background: #f0f7ff;">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Ensemble Models</h5>
+                    <p class="text-muted small mb-0">Proprietary visual hierarchy that understands cellular textures and
+                        morphological patterns of melanoma and carcinoma.</p>
+                </div>
+            </div>
+            <div class="col-md-3 reveal" style="transition-delay: 0.1s;">
+                <div class="card-premium h-100">
+                    <div class="icon-feature" style="color: var(--success-emerald); background: #f0fdf4;">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Risk Refinement</h5>
+                    <p class="text-muted small mb-0">Sophisticated benign-protection layer reduces false positives by
+                        identifying safe-harbor clinical markers automatically.</p>
+                </div>
+            </div>
+            <div class="col-md-3 reveal" style="transition-delay: 0.2s;">
+                <div class="card-premium h-100">
+                    <div class="icon-feature" style="color: var(--danger-rose); background: #fff1f2;">
+                        <i class="fa-solid fa-eye-dropper"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Grad-CAM Insight</h5>
+                    <p class="text-muted small mb-0">Visual attention heatmaps provide clinical evidence for every
+                        diagnostic outcome, showing exactly what the AI sees.</p>
+                </div>
+            </div>
+            <div class="col-md-3 reveal" style="transition-delay: 0.3s;">
+                <div class="card-premium h-100">
+                    <div class="icon-feature" style="color: var(--warning-amber); background: #fffbeb;">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Instant Velocity</h5>
+                    <p class="text-muted small mb-0">Sub-second inference times powered by optimized Edge-AI kernels for
+                        immediate bedside diagnostic support.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Row of Info Modules -->
+        <div class="row g-4 mt-2">
+            <div class="col-md-3 reveal">
+                <div class="card-premium h-100">
+                    <div class="icon-feature" style="color: #8b5cf6; background: #f5f3ff;">
+                        <i class="fa-solid fa-microscope"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Multi-Class Screening</h5>
+                    <p class="text-muted small mb-0">Unified detection for BCC, SCC, Melanoma, and Benign lesions with
+                        specialized confidence scoring for each category.</p>
+                </div>
+            </div>
+            <div class="col-md-3 reveal" style="transition-delay: 0.1s;">
+                <div class="card-premium h-100">
+                    <div class="icon-feature" style="color: #ec4899; background: #fdf2f8;">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Wellness Journal</h5>
+                    <p class="text-muted small mb-0">Interactive patient journals that correlate lifestyle factors with
+                        clinical recovery for a holistic healthcare view.</p>
+                </div>
+            </div>
+            <div class="col-md-3 reveal" style="transition-delay: 0.2s;">
+                <div class="card-premium h-100">
+                    <div class="icon-feature" style="color: #0ea5e9; background: #f0f9ff;">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Clinical History</h5>
+                    <p class="text-muted small mb-0">Secure, HIPAA-compliant encryption for all past scans and results,
+                        ensuring long-term traceability and patient monitoring.</p>
+                </div>
+            </div>
+            <div class="col-md-3 reveal" style="transition-delay: 0.3s;">
+                <div class="card-premium h-100">
+                    <div class="icon-feature" style="color: #6366f1; background: #eef2ff;">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Admin Intelligence</h5>
+                    <p class="text-muted small mb-0">Sophisticated dashboard for practitioners to monitor system
+                        performance, patient registries, and diagnostic analytics.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Third Row of Info Modules -->
+        <div class="row g-4 mt-2">
+            <div class="col-md-3 reveal">
+                <div class="card-premium h-100">
+                    <div class="icon-feature" style="color: #06b6d4; background: #ecfeff;">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Precision Analytics</h5>
+                    <p class="text-muted small mb-0">High-fidelity heatmaps and probability breakdowns for every skin
+                        analysis, providing actionable clinical data.</p>
+                </div>
+            </div>
+            <div class="col-md-3 reveal" style="transition-delay: 0.1s;">
+                <div class="card-premium h-100">
+                    <div class="icon-feature" style="color: #10b981; background: #ecfdf5;">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Encrypted Privacy</h5>
+                    <p class="text-muted small mb-0">Industry-standard AES-256 encryption ensuring patient data remains
+                        confidential, secure, and fully HIPAA-compliant.</p>
+                </div>
+            </div>
+            <div class="col-md-3 reveal" style="transition-delay: 0.2s;">
+                <div class="card-premium h-100">
+                    <div class="icon-feature" style="color: #f59e0b; background: #fffbeb;">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Global Accessibility</h5>
+                    <p class="text-muted small mb-0">Access your clinical dashboard from any device, anywhere, optimized
+                        for seamless bedside or desktop diagnostic use.</p>
+                </div>
+            </div>
+            <div class="col-md-3 reveal" style="transition-delay: 0.3s;">
+                <div class="card-premium h-100">
+                    <div class="icon-feature" style="color: #3b82f6; background: #eff6ff;">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Medical Library</h5>
+                    <p class="text-muted small mb-0">A comprehensive database of skin conditions and preventive care
+                        guides available for clinician and patient education.</p>
+                </div>
+            </div>
+            <!-- CTA Banner -->
+            <div class="cta-banner reveal mt-2 mb-4">
+                <div class="row justify-content-center position-relative z-1">
+                    <div class="col-lg-8">
+                        <h2 class="display-4 text-white mb-2">Ready for a safer skin future?</h2>
+                        <p class="fs-5 text-white opacity-75 mb-3">Join thousands of healthcare practitioners and
+                            individuals using MedVision for early detection.</p>
+                        <a href="{{ url_for('auth') }}" class="btn btn-light btn-lg px-5 py-3 fw-bold text-primary">
+                            Get Started Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    });
+</script>
+{% endblock %}

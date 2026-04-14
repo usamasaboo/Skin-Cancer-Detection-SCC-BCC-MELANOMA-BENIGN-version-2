@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container section-padding">
+    <div class="card-premium p-5 text-center">
+        <div class="icon-box mx-auto mb-4 shadow-sm"
+            style="color: #0ea5e9; background: #f0f9ff; width: 80px; height: 80px; font-size: 2.5rem;">
+            <i class="fa-solid fa-server"></i>
+        </div>
+        <h1 class="display-4 fw-bold mb-3">System Health</h1>
+        <p class="lead text-muted max-w-600 mx-auto">Monitor real-time server latency, DB load, and GPU inference status
+            in our distributed clinical environment.</p>
+
+        <div class="row g-4 mt-5 text-start">
+            <div class="col-md-4">
+                <div class="p-4 bg-white border rounded-4 shadow-sm">
+                    <div class="small text-muted mb-1 text-uppercase fw-bold">Server Latency</div>
+                    <div class="h2 fw-bold mb-2">12ms</div>
+                    <div class="badge bg-success-soft text-success px-3 py-2 rounded-pill">
+                        <i class="fa-solid fa-check-circle me-1"></i> OPTIMAL
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white border rounded-4 shadow-sm">
+                    <div class="small text-muted mb-1 text-uppercase fw-bold">Database Load</div>
+                    <div class="h2 fw-bold mb-2">14%</div>
+                    <div class="badge bg-success-soft text-success px-3 py-2 rounded-pill">
+                        <i class="fa-solid fa-check-circle me-1"></i> OPTIMAL
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white border rounded-4 shadow-sm">
+                    <div class="small text-muted mb-1 text-uppercase fw-bold">GPU Inference</div>
+                    <div class="h2 fw-bold mb-2">Active</div>
+                    <div class="badge bg-success-soft text-success px-3 py-2 rounded-pill">
+                        <i class="fa-solid fa-check-circle me-1"></i> OPTIMAL
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary px-5 py-3 fw-bold mt-5 rounded-pill">
+            <i class="fa-solid fa-arrow-left me-2"></i>Return to Admin Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

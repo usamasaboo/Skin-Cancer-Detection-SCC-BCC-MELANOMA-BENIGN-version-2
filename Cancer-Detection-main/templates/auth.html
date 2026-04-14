@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+    .auth-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 160px);
+        padding: 40px 20px;
+        background-color: var(--bg-surface);
+    }
+
+    .auth-card {
+        background: white;
+        border-radius: 24px;
+        border: 1px solid var(--border-color);
+        padding: 3rem;
+        width: 100%;
+        max-width: 440px;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .auth-header i {
+        font-size: 2.5rem;
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+    }
+
+    .nav-pills {
+        background: var(--bg-surface);
+        padding: 5px;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+    }
+
+    .nav-pills .nav-link {
+        border-radius: 10px;
+        font-weight: 700;
+        color: var(--text-muted) !important;
+        transition: all 0.2s;
+        border: none;
+        padding: 10px;
+    }
+
+    .nav-pills .nav-link.active {
+        background: white !important;
+        color: var(--primary-blue) !important;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .form-label {
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .btn-submit {
+        background-color: var(--primary-blue);
+        color: white;
+        border-radius: 12px;
+        font-weight: 700;
+        padding: 14px;
+        width: 100%;
+        border: none;
+        transition: all 0.2s;
+        margin-top: 1rem;
+    }
+
+    .btn-submit:hover {
+        background-color: #1e40af;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 15px -3px rgba(29, 78, 216, 0.3);
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+
+    .auth-footer a {
+        color: var(--primary-blue);
+        text-decoration: none;
+        font-weight: 700;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container hero-gradient">
+    <div class="container d-flex justify-content-center">
+        <div class="auth-card card-premium shadow-premium animated">
+            <div class="text-center mb-5">
+                <div class="icon-box mx-auto mb-3">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="fw-bold h2 mb-2">Secure Access</h3>
+                <p class="text-muted">Enter your clinical credentials to continue</p>
+            </div>
+
+            <!-- Custom Tab List -->
+            <div class="bg-surface p-2 rounded-4 mb-4 d-flex">
+                <button class="btn w-50 justify-content-center active-tab-btn" id="login-trigger">Sign In</button>
+                <button class="btn w-50 justify-content-center" id="register-trigger">Register</button>
+            </div>
+
+            <div id="login-form-div">
+                <form action="{{ url_for('auth') }}" method="POST">
+                    <input type="hidden" name="action" value="login">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase mb-2 d-block">Clinical ID</label>
+                        <input type="text" name="username" class="form-control bg-surface border-0 p-3 rounded-4"
+                            placeholder="Username" required autofocus>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase mb-2 d-block">Access Token</label>
+                        <input type="password" name="password" class="form-control bg-surface border-0 p-3 rounded-4"
+                            placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-3 rounded-4 mt-2">
+                        Authenticate <i class="fa-solid fa-right-to-bracket ms-2"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div id="register-form-div" style="display: none;">
+                <form action="{{ url_for('auth') }}" method="POST">
+                    <input type="hidden" name="action" value="register">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase mb-2 d-block">Username</label>
+                        <input type="text" name="username" class="form-control bg-surface border-0 p-3 rounded-4"
+                            placeholder="Choose unique ID" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase mb-2 d-block">Password</label>
+                        <input type="password" name="password" class="form-control bg-surface border-0 p-3 rounded-4"
+                            placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-3 rounded-4 mt-2">
+                        Create Account <i class="fa-solid fa-user-plus ms-2"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div class="text-center mt-5 pt-4 border-top border-soft">
+                <p class="small text-muted mb-0">
+                    <i class="fa-solid fa-lock me-1"></i>
+                    Secured by MedVision 256-bit AES encryption
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .active-tab-btn {
+        background: white !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        color: var(--accent-blue) !important;
+    }
+</style>
+
+<script>
+    const loginBtn = document.getElementById('login-trigger');
+    const registerBtn = document.getElementById('register-trigger');
+    const loginForm = document.getElementById('login-form-div');
+    const registerForm = document.getElementById('register-form-div');
+
+    loginBtn.addEventListener('click', () => {
+        loginBtn.classList.add('active-tab-btn');
+        registerBtn.classList.remove('active-tab-btn');
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+    });
+
+    registerBtn.addEventListener('click', () => {
+        registerBtn.classList.add('active-tab-btn');
+        loginBtn.classList.remove('active-tab-btn');
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+    });
+</script>
+{% endblock %}

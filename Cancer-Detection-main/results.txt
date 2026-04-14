@@ -1,0 +1,10 @@
+--- Testing Old Model on 9 Downloaded Samples ---
+File: bcc1.webp    | Pred: benign     | Conf: 42.91%
+File: bcc2.webp    | Pred: benign     | Conf: 47.43%
+File: bcc3.webp    | Pred: benign     | Conf: 45.91%
+File: scc1.jpg     | Pred: benign     | Conf: 66.10%
+File: scc2.jpg     | Pred: bcc        | Conf: 43.00%
+File: scc3.webp    | Pred: bcc        | Conf: 65.93%
+File: mel1.webp    | Pred: benign     | Conf: 60.51%
+File: mel2.webp    | Pred: melanoma   | Conf: 56.14%
+File: mel3.webp    | Pred: benign     | Conf: 57.60%

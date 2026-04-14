@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="section-padding bg-surface">
+    <div class="container">
+        <div class="row mb-5 animated">
+            <div class="col-12 text-center">
+                <div class="badge bg-soft text-danger mb-3 px-3 py-2 rounded-pill fw-bold">CLINICAL NETWORK</div>
+                <h1 class="display-4 fw-bold">Expert Connect</h1>
+                <p class="text-muted lead max-w-600 mx-auto">Direct access to board-certified dermatologists for
+                    professional second opinions and consultation.</p>
+            </div>
+        </div>
+
+        <!-- Emergency Alert (Conditional - example shown for Melanoma) -->
+        <div
+            class="alert alert-danger border-0 shadow-sm p-4 mb-5 rounded-4 d-flex align-items-center gap-4 animated pulse-slow">
+            <div class="display-4 text-danger mb-0"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div>
+                <h4 class="fw-bold mb-1">High Risk Detected</h4>
+                <p class="mb-0 small">Based on your recent scan results, we strongly recommend a secondary review with a
+                    specialist immediately. Professional consultation is vital for definitive diagnosis.</p>
+            </div>
+            <form action="{{ url_for('consult_specialist') }}" method="POST">
+                <button type="submit" class="btn btn-danger ms-auto px-4 py-2 rounded-pill fw-bold">Consult Now</button>
+            </form>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <!-- MD Anderson -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-premium h-100 d-flex flex-column p-4" style="border-top: 5px solid #be123c;">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="rounded-circle bg-soft text-danger d-flex align-items-center justify-content-center"
+                            style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            <i class="fa-solid fa-hospital"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-0">MD Anderson</h5>
+                            <p class="x-small text-muted mb-0">Dr. David Cassarino & Dr. Christopher Ho</p>
+                        </div>
+                    </div>
+                    <div class="small text-muted mb-4">
+                        <p class="mb-1"><i class="fa-solid fa-location-dot me-2"></i>1515 Holcombe Blvd, Houston, TX</p>
+                        <p class="mb-1"><i class="fa-solid fa-phone me-2"></i>+1 (888) 964-4259</p>
+                        <p class="mb-0"><i class="fa-solid fa-star me-2"></i>#1 in Cancer Care</p>
+                    </div>
+                    <form action="{{ url_for('consult_specialist') }}" method="POST" class="mt-auto">
+                        <button type="submit" class="btn btn-outline-danger w-100 py-2 rounded-pill fw-bold">Consult
+                            Now</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Memorial Sloan Kettering -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-premium h-100 d-flex flex-column p-4" style="border-top: 5px solid #1d4ed8;">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="rounded-circle bg-soft text-primary d-flex align-items-center justify-content-center"
+                            style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            <i class="fa-solid fa-microscope text-primary"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-0">MSKCC</h5>
+                            <p class="x-small text-muted mb-0">Dr. Marisa Garshick & Dr. Monica Schadlow</p>
+                        </div>
+                    </div>
+                    <div class="small text-muted mb-4">
+                        <p class="mb-1"><i class="fa-solid fa-location-dot me-2"></i>1275 York Ave, New York, NY</p>
+                        <p class="mb-1"><i class="fa-solid fa-phone me-2"></i>+1 (855) 984-3459</p>
+                        <p class="mb-0"><i class="fa-solid fa-award me-2"></i>Pioneer in Immunotherapy</p>
+                    </div>
+                    <form action="{{ url_for('consult_specialist') }}" method="POST" class="mt-auto">
+                        <button type="submit" class="btn btn-outline-primary w-100 py-2 rounded-pill fw-bold">Consult
+                            Now</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Secondary Review Option -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card-premium h-100 d-flex flex-column p-4 border border-primary border-opacity-25"
+                    style="background: #f0f9ff;">
+                    <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-file-export me-2"></i>Secondary Review
+                    </h5>
+                    <p class="x-small text-muted mb-4">Securely share your AI prediction results and images with Mayo
+                        Clinic for human-verified clinical validation.</p>
+                    <div class="mt-auto">
+                        <form action="{{ url_for('share_with_expert') }}" method="POST">
+                            <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-bold">Share
+                                Report</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Clinical Radar: Nearby Specialists (Simulated Map) -->
+        <div class="row animated mb-5" style="animation-delay: 0.3s;">
+            <div class="col-12">
+                <div class="card-premium p-0 overflow-hidden">
+                    <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="fw-bold mb-1"><i
+                                    class="fa-solid fa-map-location-dot me-2 text-primary"></i>Clinical Radar</h5>
+                            <p class="x-small text-muted mb-0">Live detection of nearest specialized cancer institutes
+                                and dermatology clinics.</p>
+                        </div>
+                        <div class="badge bg-primary-soft text-primary px-3 py-2 rounded-pill small fw-bold">GPS ACTIVE
+                        </div>
+                    </div>
+
+                    <div class="position-relative" style="height: 400px; background: #eef2f3;">
+                        <!-- Simulated Map Grid -->
+                        <div class="w-100 h-100" style="background-image: 
+                            radial-gradient(circle at 20% 30%, #fff 2px, transparent 2px),
+                            radial-gradient(circle at 60% 70%, #fff 2px, transparent 2px),
+                            linear-gradient(rgba(14, 165, 233, 0.05) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(14, 165, 233, 0.05) 1px, transparent 1px);
+                            background-size: 100px 100px, 150px 150px, 40px 40px, 40px 40px;">
+                        </div>
+
+                        <!-- Pulse Ring for User -->
+                        <div class="position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <div class="pulse-dot bg-primary" style="width: 15px; height: 15px;"></div>
+                            <div class="x-small fw-bold text-primary mt-2">YOU</div>
+                        </div>
+
+                        <!-- Hospital Marker 1 (MD Anderson) -->
+                        <div class="position-absolute animated-pulse" style="top: 25%; left: 35%;">
+                            <div class="badge bg-danger p-2 rounded-circle shadow-lg mb-2">
+                                <i class="fa-solid fa-square-h text-white"></i>
+                            </div>
+                            <div class="bg-white p-2 rounded shadow-sm x-small fw-bold border"
+                                style="min-width: 120px;">
+                                MD Anderson<br>
+                                <span class="text-muted fw-normal">1.2 miles away</span>
+                            </div>
+                        </div>
+
+                        <!-- Hospital Marker 2 (Mayo Clinic) -->
+                        <div class="position-absolute animated-pulse"
+                            style="top: 65%; left: 60%; animation-delay: 0.5s;">
+                            <div class="badge bg-primary p-2 rounded-circle shadow-lg mb-2">
+                                <i class="fa-solid fa-square-h text-white"></i>
+                            </div>
+                            <div class="bg-white p-2 rounded shadow-sm x-small fw-bold border"
+                                style="min-width: 120px;">
+                                Mayo Clinic<br>
+                                <span class="text-muted fw-normal">4.8 miles away</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-premium p-5 mb-5">
+
+            <h4 class="fw-bold mb-4">📱 Teleconsultation Information</h4>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="p-3 bg-surface rounded-4 h-100">
+                        <h6 class="fw-bold"><span class="badge bg-primary text-white me-2">1</span>Steps to Consult</h6>
+                        <p class="x-small text-muted mb-0">Choose a specialist, upload your recent "MedVision" scan
+                            report, and schedule a 15-minute video call.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-surface rounded-4 h-100">
+                        <h6 class="fw-bold"><span class="badge bg-primary text-white me-2">2</span>Required Documents
+                        </h6>
+                        <p class="x-small text-muted mb-0">AI Diagnostic Report, Photo Identification, and Clinical
+                            Symptom History from your Wellness Journal.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-surface rounded-4 h-100">
+                        <h6 class="fw-bold"><span class="badge bg-primary text-white me-2">3</span>Post-Consultation
+                        </h6>
+                        <p class="x-small text-muted mb-0">Receive a human-verified biopsy request or "All Clear" within
+                            24 hours of your session.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary px-5 py-2 rounded-pill fw-bold">
+                <i class="fa-solid fa-arrow-left me-2"></i>Return to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

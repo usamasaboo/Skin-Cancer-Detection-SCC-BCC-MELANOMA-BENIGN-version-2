@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="section-padding bg-surface">
+    <div class="container">
+        <div class="row mb-5 animated">
+            <div class="col-12 text-center">
+                <div class="badge bg-soft text-primary mb-3 px-3 py-2 rounded-pill fw-bold">EDUCATIONAL RESOURCES</div>
+                <h1 class="display-4 fw-bold">Medical Library</h1>
+                <p class="text-muted lead max-w-600 mx-auto">Peer-reviewed dermatological guides and technical
+                    documentation for the AI diagnostic system.</p>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <!-- Melanoma -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card-premium h-100 p-4 d-flex flex-column" style="border-top: 5px solid #be123c;">
+                    <div class="mb-3">
+                        <h5 class="fw-bold text-danger">Melanoma</h5>
+                        <p class="x-small text-muted mb-0">Most serious skin cancer developing in melanocytes. Key:
+                            Multiple colors & irregular shape.</p>
+                    </div>
+
+                    <div class="flex-grow-1">
+                        <div class="p-2 border-bottom x-small">
+                            <span class="fw-bold text-muted text-uppercase">ABCDE Rule:</span> Asymmetry, Border
+                            (irregular), Color (variant), Diameter (>6mm), Evolving.
+                        </div>
+                        <div class="p-2 border-bottom x-small">
+                            <span class="fw-bold text-muted text-uppercase">Appearance:</span> Dark brown, black, or
+                            multi-colored; asymmetrical with irregular borders.
+                        </div>
+                        <div class="p-2 border-bottom x-small">
+                            <span class="fw-bold text-muted text-uppercase">Texture:</span> Flat or slightly raised; can
+                            look like a suspicious mole.
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-2 text-center border-top border-danger border-opacity-10">
+                        <span class="badge bg-danger text-white rounded-pill px-4 py-2 small fw-bold shadow-sm">High
+                            Risk</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BCC -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card-premium h-100 p-4 d-flex flex-column" style="border-top: 5px solid #1d4ed8;">
+                    <div class="mb-3">
+                        <h5 class="fw-bold text-primary">Basal Cell (BCC)</h5>
+                        <p class="x-small text-muted mb-0">Common slow-growing cancer. Key: Shiny/Pearly bump with
+                            smooth edges.</p>
+                    </div>
+
+                    <div class="flex-grow-1">
+                        <div class="p-2 border-bottom x-small">
+                            <span class="fw-bold text-muted text-uppercase">Appearance:</span> Pearly/shiny bump, pink
+                            or skin-colored.
+                        </div>
+                        <div class="p-2 border-bottom x-small">
+                            <span class="fw-bold text-muted text-uppercase">Vessels:</span> Telangiectasia (thin visible
+                            blood vessels) often present.
+                        </div>
+                        <div class="p-2 border-bottom x-small">
+                            <span class="fw-bold text-muted text-uppercase">Common Areas:</span> Nose, face, neck.
+                            Smooth and shiny texture.
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-2 text-center border-top border-primary border-opacity-10">
+                        <span
+                            class="badge bg-primary text-white rounded-pill px-4 py-2 small fw-bold shadow-sm">Moderate
+                            Risk</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCC -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card-premium h-100 p-4 d-flex flex-column" style="border-top: 5px solid #a16207;">
+                    <div class="mb-3">
+                        <h5 class="fw-bold text-warning">Squamous Cell (SCC)</h5>
+                        <p class="x-small text-muted mb-0">Can spread if untreated. Key: Scaly / rough texture with
+                            crusty surface.</p>
+                    </div>
+
+                    <div class="flex-grow-1">
+                        <div class="p-2 border-bottom x-small">
+                            <span class="fw-bold text-muted text-uppercase">Appearance:</span> Rough, scaly, often
+                            red/pink; may look like a crusty sore.
+                        </div>
+                        <div class="p-2 border-bottom x-small">
+                            <span class="fw-bold text-muted text-uppercase">Shape:</span> Irregular, thick, raised
+                            lesion; dry and flaky texture.
+                        </div>
+                        <div class="p-2 border-bottom x-small">
+                            <span class="fw-bold text-muted text-uppercase">Common Areas:</span> Face, ears, hands
+                            (sun-exposed skin).
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-2 text-center border-top border-warning border-opacity-10">
+                        <span class="badge bg-warning text-dark rounded-pill px-4 py-2 small fw-bold shadow-sm">Moderate
+                            Risk</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benign Indicators -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card-premium h-100 p-4 d-flex flex-column"
+                    style="border-top: 5px solid #15803d; background-color: #f0fdf4;">
+                    <div class="mb-3">
+                        <h5 class="fw-bold text-success">Benign Indicators</h5>
+                        <p class="x-small text-muted mb-0">Common markers of a low-risk, non-malignant lesion.</p>
+                    </div>
+
+                    <div class="flex-grow-1">
+                        <div class="p-2 border-bottom x-small">
+                            <span class="fw-bold text-muted text-uppercase text-success">Symmetrical →</span> Both
+                            halves of the lesion look almost identical.
+                        </div>
+                        <div class="p-2 border-bottom x-small">
+                            <span class="fw-bold text-muted text-uppercase text-success">Round Edges →</span> Borders
+                            are smooth, sharp, and well-defined.
+                        </div>
+                        <div class="p-2 border-bottom x-small">
+                            <span class="fw-bold text-muted text-uppercase text-success">Single Color →</span> Uniform
+                            brown or tan; no sudden color shifts.
+                        </div>
+                        <div class="p-2 border-bottom x-small">
+                            <span class="fw-bold text-muted text-uppercase text-success">Stable →</span> No evolution in
+                            size, shape, or color over time.
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-2 text-center border-top border-success border-opacity-10">
+                        <span class="badge bg-success text-white rounded-pill px-4 py-2 small fw-bold shadow-sm">Low
+                            Risk</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- AI Model Explanation -->
+        <div class="card-premium p-5 animated" style="animation-delay: 0.2s;">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <h2 class="fw-bold mb-4"><i class="fa-solid fa-microchip me-3 text-primary"></i>AI Model
+                        Documentation</h2>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold x-small text-uppercase text-muted border-bottom pb-1">Architecture</h6>
+                            <p class="small mb-0"><strong>CNN:</strong> EfficientNet-B0 Backbone</p>
+                            <p class="x-small text-muted">Optimized for high accuracy with low compute requirements.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold x-small text-uppercase text-muted border-bottom pb-1">Dataset</h6>
+                            <p class="small mb-0">ISIC (International Skin Imaging Collaboration)</p>
+                            <p class="x-small text-muted">Trained on 30,000+ dermoscopic images.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold x-small text-uppercase text-muted border-bottom pb-1">Accuracy Metrics
+                            </h6>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="h4 fw-bold mb-0">94.2%</span>
+                                <span class="badge bg-success-soft text-success x-small">Validated</span>
+                            </div>
+                            <p class="x-small text-muted">Top-1 Accuracy on balanced test partition.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold x-small text-uppercase text-muted border-bottom pb-1">Explainability</h6>
+                            <p class="small mb-0">Grad-CAM Heatmaps</p>
+                            <p class="x-small text-muted">Visualizes the "Attention" area of the neural network.</p>
+                        </div>
+                    </div>
+                    <p class="small text-muted italic">"Our hierarchical refinement layer (ABCDE validation) ensures
+                        that AI predictions are cross-referenced with clinical morphological features like border
+                        irregularity and color variation."</p>
+                </div>
+                <div class="col-lg-5 text-center">
+                    <div class="p-4 bg-surface rounded-4 border border-dashed">
+                        <h6 class="fw-bold mb-3">Confusion Matrix Summary</h6>
+                        <div class="d-flex flex-column gap-2">
+                            <div class="d-flex justify-content-between small">
+                                <span>Melanoma Sensitivity</span>
+                                <span class="fw-bold text-danger">91.5%</span>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-danger" style="width: 91.5%"></div>
+                            </div>
+                            <div class="d-flex justify-content-between small mt-2">
+                                <span>Benign Specificity</span>
+                                <span class="fw-bold text-success">96.8%</span>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-success" style="width: 96.8%"></div>
+                            </div>
+                        </div>
+                        <p class="x-small text-muted mt-4 mb-0"><i class="fa-solid fa-circle-info me-1"></i>Grad-CAM
+                            heatmap highlights areas of structural disruption found in malignant specimens.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary px-5 py-2 rounded-pill fw-bold">
+                <i class="fa-solid fa-arrow-left me-2"></i>Return to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="section-padding bg-surface">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card-premium p-4 mb-4">
+                    <h2 class="fw-bold mb-4"><i class="fa-solid fa-notes-medical me-2 text-primary"></i>Symptom Entry
+                        Form</h2>
+                    <form action="{{ url_for('save_wellness') }}" method="POST" enctype="multipart/form-data">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">Date of Observation</label>
+                                <input type="date" name="date" class="form-control rounded-3" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">Location of Lesion</label>
+                                <select name="location" class="form-select rounded-3" required>
+                                    <option value="" selected disabled>Select Location</option>
+                                    <option value="face">Face</option>
+                                    <option value="neck">Neck</option>
+                                    <option value="arm">Arm</option>
+                                    <option value="leg">Leg</option>
+                                    <option value="back">Back</option>
+                                    <option value="chest">Chest</option>
+                                    <option value="hand/foot">Hand/Foot</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <h6 class="fw-bold mb-3 border-bottom pb-2">Localized Symptoms</h6>
+                                <div class="d-flex flex-wrap gap-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="itching" id="itching">
+                                        <label class="form-check-label small" for="itching">Itching</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="pain" id="pain">
+                                        <label class="form-check-label small" for="pain">Pain</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="bleeding" id="bleeding">
+                                        <label class="form-check-label small" for="bleeding">Bleeding</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="color_change"
+                                            id="color_change">
+                                        <label class="form-check-label small" for="color_change">Color Change</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mt-4">
+                                <label class="form-label small fw-bold">Size Change?</label>
+                                <select name="size_change" class="form-select rounded-3">
+                                    <option value="Same">Same</option>
+                                    <option value="Increase">Increase</option>
+                                    <option value="Decrease">Decrease</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mt-4">
+                                <label class="form-label small fw-bold">Type of Skin Cancer</label>
+                                <select name="cancer_type" class="form-select rounded-3">
+                                    <option value="Not Specified" selected>Not Specified</option>
+                                    <option value="Melanoma">Melanoma</option>
+                                    <option value="BCC">BCC (Basal Cell)</option>
+                                    <option value="SCC">SCC (Squamous Cell)</option>
+                                    <option value="Benign">Benign/Other</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mt-4">
+                                <label class="form-label small fw-bold">Upload Lesion Image</label>
+                                <input type="file" name="image" class="form-control rounded-3" accept="image/*">
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <label class="form-label small fw-bold">Clinical Notes</label>
+                                <textarea name="notes" class="form-control rounded-4" rows="3"
+                                    placeholder="Additional observations..."></textarea>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-bold">
+                                    <i class="fa-solid fa-save me-2"></i>Save Entry
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-premium p-4">
+                    <h2 class="fw-bold mb-4"><i class="fa-solid fa-clock-rotate-left me-2 text-success"></i>History
+                        Table</h2>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr class="small text-uppercase fw-bold text-muted">
+                                    <th>Date</th>
+                                    <th>Location</th>
+                                    <th>Symptoms</th>
+                                    <th>Type</th>
+                                    <th>Size</th>
+                                    <th>Color</th>
+                                    <th>Remarks</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="small">
+                                {% if history %}
+                                {% for entry in history %}
+                                <tr>
+                                    <td class="fw-bold">{{ entry.date }}</td>
+                                    <td><span class="badge bg-soft text-primary">{{ entry.location }}</span></td>
+                                    <td>
+                                        {% if entry.itching == "Yes" %}<span class="text-danger me-1">Itch</span>{%
+                                        endif %}
+                                        {% if entry.pain == "Yes" %}<span class="text-danger me-1">Pain</span>{% endif
+                                        %}
+                                        {% if entry.bleeding == "Yes" %}<span class="text-danger">Bleed</span>{% endif
+                                        %}
+                                        {% if entry.itching == "No" and entry.pain == "No" and entry.bleeding == "No"
+                                        %}None{% endif %}
+                                    </td>
+                                    <td><span class="badge bg-light text-dark">{{ entry.cancer_type or 'N/A' }}</span>
+                                    </td>
+                                    <td>{{ entry.size_change }}</td>
+                                    <td class="{% if entry.color_change == 'Yes' %}text-warning fw-bold{% endif %}">{{
+                                        entry.color_change }}</td>
+                                    <td class="text-muted text-truncate" style="max-width: 150px;">{{ entry.notes }}
+                                    </td>
+                                    <td class="text-end">
+                                        <form action="{{ url_for('delete_wellness_user', entry_id=entry.id) }}"
+                                            method="POST" onsubmit="return confirm('Delete this journal entry?');">
+                                            <button type="submit" class="btn btn-xs btn-outline-danger rounded-pill"><i
+                                                    class="fa-solid fa-trash"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="6" class="text-center py-4 text-muted small italic">No histories
+                                        recorded yet.</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card-premium p-4 mb-4 bg-primary text-white">
+                    <h5 class="fw-bold mb-3">🩺 ABCDE Guide</h5>
+                    <div class="small opacity-90">
+                        <p class="mb-2"><strong>A &ndash; Asymmetry:</strong> One half of the mole does not match
+                            others.</p>
+                        <p class="mb-2"><strong>B &ndash; Border:</strong> Irreglar, scalloped or poorly defined
+                            borders.</p>
+                        <p class="mb-2"><strong>C &ndash; Color:</strong> Variation from one area to another.</p>
+                        <p class="mb-2"><strong>D &ndash; Diameter:</strong> Melanomas are usually > 6mm.</p>
+                        <p class="mb-0"><strong>E &ndash; Evolving:</strong> A mole that looks different or is changing.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card-premium p-4">
+                    <h5 class="fw-bold mb-3">Timeline Comparison</h5>
+                    <p class="x-small text-muted mb-4">View your lesion images chronologically to track visual changes.
+                    </p>
+                    <div class="d-flex flex-column gap-3">
+                        {% if history %}
+                        {% for entry in history if entry.image_path %}
+                        <div class="border rounded-4 p-2">
+                            <img src="/{{ entry.image_path }}" class="img-fluid rounded-3 mb-2 w-100"
+                                style="height: 120px; object-fit: cover;">
+                            <div class="x-small text-center fw-bold">{{ entry.date }}</div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="text-center py-5 border border-dashed rounded-4">
+                            <i class="fa-solid fa-images h1 opacity-20 mb-0"></i>
+                            <p class="x-small text-muted mt-2">No images uploaded</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

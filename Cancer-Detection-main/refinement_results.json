@@ -1,0 +1,562 @@
+[
+  {
+    "expected": "bcc",
+    "file": "ISIC_0024331.jpg",
+    "ai_pred": "bcc",
+    "ref_pred": "bcc",
+    "ai_probs": {
+      "bcc": 0.757,
+      "benign": 0.011,
+      "melanoma": 0.004,
+      "scc": 0.228
+    },
+    "ref_probs": {
+      "bcc": 0.757,
+      "benign": 0.011,
+      "melanoma": 0.004,
+      "scc": 0.228
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.844,
+      "border": 1.0,
+      "shiny": 0.0,
+      "roughness": 0.249,
+      "redness": 1.0,
+      "ulcer": 0.154,
+      "multicolor": 0.351,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "bcc",
+    "file": "ISIC_0024332.jpg",
+    "ai_pred": "benign",
+    "ref_pred": "benign",
+    "ai_probs": {
+      "bcc": 0.046,
+      "benign": 0.389,
+      "melanoma": 0.369,
+      "scc": 0.196
+    },
+    "ref_probs": {
+      "bcc": 0.046,
+      "benign": 0.389,
+      "melanoma": 0.369,
+      "scc": 0.196
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.409,
+      "border": 0.417,
+      "shiny": 0.0,
+      "roughness": 0.391,
+      "redness": 1.0,
+      "ulcer": 0.107,
+      "multicolor": 0.474,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "bcc",
+    "file": "ISIC_0024345.jpg",
+    "ai_pred": "scc",
+    "ref_pred": "scc",
+    "ai_probs": {
+      "bcc": 0.002,
+      "benign": 0.0,
+      "melanoma": 0.0,
+      "scc": 0.998
+    },
+    "ref_probs": {
+      "bcc": 0.002,
+      "benign": 0.0,
+      "melanoma": 0.0,
+      "scc": 0.998
+    },
+    "clinical_metrics": {
+      "asymmetry": 1.0,
+      "border": 1.0,
+      "shiny": 0.0,
+      "roughness": 0.341,
+      "redness": 1.0,
+      "ulcer": 0.025,
+      "multicolor": 0.353,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "bcc",
+    "file": "ISIC_0024360.jpg",
+    "ai_pred": "bcc",
+    "ref_pred": "benign",
+    "ai_probs": {
+      "bcc": 0.864,
+      "benign": 0.052,
+      "melanoma": 0.002,
+      "scc": 0.082
+    },
+    "ref_probs": {
+      "bcc": 0.01,
+      "benign": 0.97,
+      "melanoma": 0.01,
+      "scc": 0.01
+    },
+    "clinical_metrics": {
+      "asymmetry": 1.0,
+      "border": 0.271,
+      "shiny": 0.0,
+      "roughness": 0.151,
+      "redness": 0.485,
+      "ulcer": 1.0,
+      "multicolor": 0.502,
+      "is_blank": 1
+    }
+  },
+  {
+    "expected": "bcc",
+    "file": "ISIC_0024403.jpg",
+    "ai_pred": "bcc",
+    "ref_pred": "bcc",
+    "ai_probs": {
+      "bcc": 0.756,
+      "benign": 0.04,
+      "melanoma": 0.198,
+      "scc": 0.007
+    },
+    "ref_probs": {
+      "bcc": 0.671,
+      "benign": 0.035,
+      "melanoma": 0.272,
+      "scc": 0.022
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.685,
+      "border": 0.668,
+      "shiny": 0.0,
+      "roughness": 0.854,
+      "redness": 1.0,
+      "ulcer": 1.0,
+      "multicolor": 0.772,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "scc",
+    "file": "ISIC_0024329.jpg",
+    "ai_pred": "scc",
+    "ref_pred": "scc",
+    "ai_probs": {
+      "bcc": 0.087,
+      "benign": 0.014,
+      "melanoma": 0.002,
+      "scc": 0.897
+    },
+    "ref_probs": {
+      "bcc": 0.087,
+      "benign": 0.014,
+      "melanoma": 0.002,
+      "scc": 0.897
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.835,
+      "border": 0.876,
+      "shiny": 0.0,
+      "roughness": 0.182,
+      "redness": 0.544,
+      "ulcer": 0.101,
+      "multicolor": 0.441,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "scc",
+    "file": "ISIC_0024372.jpg",
+    "ai_pred": "scc",
+    "ref_pred": "scc",
+    "ai_probs": {
+      "bcc": 0.01,
+      "benign": 0.005,
+      "melanoma": 0.059,
+      "scc": 0.926
+    },
+    "ref_probs": {
+      "bcc": 0.01,
+      "benign": 0.005,
+      "melanoma": 0.059,
+      "scc": 0.926
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.566,
+      "border": 0.89,
+      "shiny": 0.0,
+      "roughness": 0.504,
+      "redness": 1.0,
+      "ulcer": 0.67,
+      "multicolor": 0.608,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "scc",
+    "file": "ISIC_0024418.jpg",
+    "ai_pred": "bcc",
+    "ref_pred": "melanoma",
+    "ai_probs": {
+      "bcc": 0.585,
+      "benign": 0.293,
+      "melanoma": 0.121,
+      "scc": 0.001
+    },
+    "ref_probs": {
+      "bcc": 0.402,
+      "benign": 0.101,
+      "melanoma": 0.494,
+      "scc": 0.004
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.62,
+      "border": 0.104,
+      "shiny": 0.0,
+      "roughness": 1.0,
+      "redness": 1.0,
+      "ulcer": 1.0,
+      "multicolor": 0.976,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "scc",
+    "file": "ISIC_0024450.jpg",
+    "ai_pred": "scc",
+    "ref_pred": "scc",
+    "ai_probs": {
+      "bcc": 0.0,
+      "benign": 0.0,
+      "melanoma": 0.0,
+      "scc": 1.0
+    },
+    "ref_probs": {
+      "bcc": 0.0,
+      "benign": 0.0,
+      "melanoma": 0.0,
+      "scc": 1.0
+    },
+    "clinical_metrics": {
+      "asymmetry": 1.0,
+      "border": 0.424,
+      "shiny": 0.0,
+      "roughness": 0.197,
+      "redness": 0.466,
+      "ulcer": 1.0,
+      "multicolor": 1.0,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "scc",
+    "file": "ISIC_0024463.jpg",
+    "ai_pred": "scc",
+    "ref_pred": "scc",
+    "ai_probs": {
+      "bcc": 0.025,
+      "benign": 0.051,
+      "melanoma": 0.098,
+      "scc": 0.826
+    },
+    "ref_probs": {
+      "bcc": 0.023,
+      "benign": 0.025,
+      "melanoma": 0.192,
+      "scc": 0.759
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.861,
+      "border": 1.0,
+      "shiny": 0.0,
+      "roughness": 0.294,
+      "redness": 0.854,
+      "ulcer": 0.094,
+      "multicolor": 0.462,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "melanoma",
+    "file": "ISIC_0024310.jpg",
+    "ai_pred": "benign",
+    "ref_pred": "scc",
+    "ai_probs": {
+      "bcc": 0.16,
+      "benign": 0.423,
+      "melanoma": 0.041,
+      "scc": 0.377
+    },
+    "ref_probs": {
+      "bcc": 0.054,
+      "benign": 0.072,
+      "melanoma": 0.104,
+      "scc": 0.77
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.572,
+      "border": 1.0,
+      "shiny": 0.003,
+      "roughness": 1.0,
+      "redness": 1.0,
+      "ulcer": 1.0,
+      "multicolor": 0.854,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "melanoma",
+    "file": "ISIC_0024313.jpg",
+    "ai_pred": "benign",
+    "ref_pred": "melanoma",
+    "ai_probs": {
+      "bcc": 0.028,
+      "benign": 0.563,
+      "melanoma": 0.404,
+      "scc": 0.005
+    },
+    "ref_probs": {
+      "bcc": 0.008,
+      "benign": 0.079,
+      "melanoma": 0.905,
+      "scc": 0.008
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.77,
+      "border": 0.15,
+      "shiny": 0.0,
+      "roughness": 1.0,
+      "redness": 1.0,
+      "ulcer": 1.0,
+      "multicolor": 1.0,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "melanoma",
+    "file": "ISIC_0024315.jpg",
+    "ai_pred": "benign",
+    "ref_pred": "melanoma",
+    "ai_probs": {
+      "bcc": 0.077,
+      "benign": 0.736,
+      "melanoma": 0.185,
+      "scc": 0.002
+    },
+    "ref_probs": {
+      "bcc": 0.055,
+      "benign": 0.413,
+      "melanoma": 0.527,
+      "scc": 0.004
+    },
+    "clinical_metrics": {
+      "asymmetry": 1.0,
+      "border": 0.175,
+      "shiny": 0.0,
+      "roughness": 0.766,
+      "redness": 0.857,
+      "ulcer": 1.0,
+      "multicolor": 0.906,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "melanoma",
+    "file": "ISIC_0024323.jpg",
+    "ai_pred": "melanoma",
+    "ref_pred": "melanoma",
+    "ai_probs": {
+      "bcc": 0.014,
+      "benign": 0.364,
+      "melanoma": 0.372,
+      "scc": 0.25
+    },
+    "ref_probs": {
+      "bcc": 0.008,
+      "benign": 0.107,
+      "melanoma": 0.739,
+      "scc": 0.146
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.641,
+      "border": 1.0,
+      "shiny": 0.0,
+      "roughness": 0.576,
+      "redness": 1.0,
+      "ulcer": 0.616,
+      "multicolor": 0.697,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "melanoma",
+    "file": "ISIC_0024367.jpg",
+    "ai_pred": "benign",
+    "ref_pred": "melanoma",
+    "ai_probs": {
+      "bcc": 0.267,
+      "benign": 0.558,
+      "melanoma": 0.162,
+      "scc": 0.012
+    },
+    "ref_probs": {
+      "bcc": 0.139,
+      "benign": 0.145,
+      "melanoma": 0.677,
+      "scc": 0.039
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.92,
+      "border": 0.533,
+      "shiny": 0.0,
+      "roughness": 0.624,
+      "redness": 0.918,
+      "ulcer": 1.0,
+      "multicolor": 1.0,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "benign",
+    "file": "ISIC_0024327.jpg",
+    "ai_pred": "benign",
+    "ref_pred": "benign",
+    "ai_probs": {
+      "bcc": 0.0,
+      "benign": 0.949,
+      "melanoma": 0.016,
+      "scc": 0.035
+    },
+    "ref_probs": {
+      "bcc": 0.0,
+      "benign": 0.904,
+      "melanoma": 0.019,
+      "scc": 0.077
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.434,
+      "border": 0.207,
+      "shiny": 0.0,
+      "roughness": 0.834,
+      "redness": 1.0,
+      "ulcer": 0.384,
+      "multicolor": 0.504,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "benign",
+    "file": "ISIC_0024348.jpg",
+    "ai_pred": "benign",
+    "ref_pred": "benign",
+    "ai_probs": {
+      "bcc": 0.0,
+      "benign": 0.973,
+      "melanoma": 0.027,
+      "scc": 0.0
+    },
+    "ref_probs": {
+      "bcc": 0.0,
+      "benign": 0.965,
+      "melanoma": 0.035,
+      "scc": 0.0
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.798,
+      "border": 0.514,
+      "shiny": 0.002,
+      "roughness": 0.833,
+      "redness": 1.0,
+      "ulcer": 0.024,
+      "multicolor": 0.288,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "benign",
+    "file": "ISIC_0024357.jpg",
+    "ai_pred": "benign",
+    "ref_pred": "benign",
+    "ai_probs": {
+      "bcc": 0.0,
+      "benign": 0.991,
+      "melanoma": 0.006,
+      "scc": 0.002
+    },
+    "ref_probs": {
+      "bcc": 0.0,
+      "benign": 0.986,
+      "melanoma": 0.008,
+      "scc": 0.005
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.815,
+      "border": 0.985,
+      "shiny": 0.0,
+      "roughness": 0.699,
+      "redness": 1.0,
+      "ulcer": 0.071,
+      "multicolor": 0.394,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "benign",
+    "file": "ISIC_0024364.jpg",
+    "ai_pred": "benign",
+    "ref_pred": "benign",
+    "ai_probs": {
+      "bcc": 0.0,
+      "benign": 0.997,
+      "melanoma": 0.003,
+      "scc": 0.0
+    },
+    "ref_probs": {
+      "bcc": 0.0,
+      "benign": 0.997,
+      "melanoma": 0.003,
+      "scc": 0.0
+    },
+    "clinical_metrics": {
+      "asymmetry": 1.0,
+      "border": 0.142,
+      "shiny": 0.0,
+      "roughness": 0.55,
+      "redness": 1.0,
+      "ulcer": 0.257,
+      "multicolor": 0.483,
+      "is_blank": 0
+    }
+  },
+  {
+    "expected": "benign",
+    "file": "ISIC_0024365.jpg",
+    "ai_pred": "benign",
+    "ref_pred": "benign",
+    "ai_probs": {
+      "bcc": 0.0,
+      "benign": 0.999,
+      "melanoma": 0.001,
+      "scc": 0.0
+    },
+    "ref_probs": {
+      "bcc": 0.0,
+      "benign": 0.999,
+      "melanoma": 0.001,
+      "scc": 0.0
+    },
+    "clinical_metrics": {
+      "asymmetry": 0.517,
+      "border": 0.636,
+      "shiny": 0.0,
+      "roughness": 0.664,
+      "redness": 1.0,
+      "ulcer": 0.124,
+      "multicolor": 0.376,
+      "is_blank": 0
+    }
+  }
+]

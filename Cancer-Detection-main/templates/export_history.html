@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+    @media print {
+
+        .navbar,
+        .btn,
+        .footer,
+        .no-print {
+            display: none !important;
+        }
+
+        .container {
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .card-premium {
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
+
+        body {
+            background: white !important;
+            color: black !important;
+        }
+
+        .table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+        }
+
+        .table th,
+        .table td {
+            border: 1px solid #ddd !important;
+            padding: 12px !important;
+            text-align: left !important;
+        }
+
+        .badge {
+            border: 1px solid #000 !important;
+            color: #000 !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <div class="card-premium p-5">
+        <div class="text-center no-print">
+            <div class="icon-box mx-auto mb-4 shadow-sm"
+                style="color: #6366f1; background: #eef2ff; width: 80px; height: 80px; font-size: 2.5rem;">
+                <i class="fa-solid fa-file-export"></i>
+            </div>
+            <h1 class="display-4 fw-bold mb-3">Health Export</h1>
+            <p class="lead text-muted max-w-600 mx-auto">Generate a comprehensive clinical summary of all your records
+                in a single document. This unified report is designed for seamless sharing with your primary healthcare
+                provider.</p>
+        </div>
+
+        <!-- Printable Report Header (Only visible in print or preview) -->
+        <div class="d-none d-print-block mb-5">
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-4 mb-4">
+                <div>
+                    <h1 class="fw-bold text-primary mb-1">Clinical Diagnostic Summary</h1>
+                    <p class="text-muted mb-0">Patient: {{ session.get('username') }} | Compiled on: {{ now if now else
+                        'Today' }}</p>
+                </div>
+                <div class="text-end">
+                    <h4 class="fw-bold">MEDVISION AI</h4>
+                    <p class="small text-muted mb-0">System Version 2.4.0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <h4 class="fw-bold mb-4 no-print"><i class="fa-solid fa-file-medical me-2 text-primary"></i>Diagnostic
+                History Portfolio</h4>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle {{ 'd-none d-print-table' if not history else '' }}">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Analysis Result</th>
+                            <th>Confidence</th>
+                            <th class="no-print">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if history %}
+                        {% for item in history %}
+                        <tr>
+                            <td class="small">{{ item.timestamp }}</td>
+                            <td>
+                                <span
+                                    class="badge {% if 'Melanoma' in item.prediction or 'Carcinoma' in item.prediction %}bg-danger{% else %}bg-success{% endif %}">
+                                    {{ item.prediction }}
+                                </span>
+                            </td>
+                            <td class="fw-bold">{{ item.confidence }}</td>
+                            <td class="no-print">
+                                <a href="{{ url_for('view_report', report_id=item.id) }}"
+                                    class="btn btn-sm btn-link text-primary p-0">View Details</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center py-5 text-muted">No records found to export.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="mt-5 d-flex flex-wrap gap-3 justify-content-center no-print">
+            <a href="{{ url_for('download_history_pdf') }}"
+                class="btn btn-primary px-4 py-3 fw-bold rounded-pill {% if not history %}disabled{% endif %}">
+                <i class="fa-solid fa-file-pdf me-2"></i>Download PDF
+            </a>
+            <form action="{{ url_for('send_to_doctor') }}" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-outline-primary px-4 py-3 fw-bold rounded-pill" {% if not history
+                    %}disabled{% endif %}>
+                    <i class="fa-solid fa-paper-plane me-2"></i>Send to Doctor
+                </button>
+            </form>
+            <button onclick="window.print()" class="btn btn-outline-danger px-4 py-3 fw-bold rounded-pill" {% if not
+                history %}disabled{% endif %}>
+                <i class="fa-solid fa-print me-2"></i>Print Portfolio
+            </button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary px-4 py-3 fw-bold rounded-pill">
+                <i class="fa-solid fa-arrow-left me-2"></i>Back
+            </a>
+        </div>
+
+        <div class="mt-4 p-4 bg-light rounded-4 border border-dashed text-center no-print">
+            <p class="small text-muted mb-0"><i class="fa-solid fa-shield-halved me-2"></i>All exports are generated
+                using HIPAA-compliant visualization standards for clinical data portability.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
