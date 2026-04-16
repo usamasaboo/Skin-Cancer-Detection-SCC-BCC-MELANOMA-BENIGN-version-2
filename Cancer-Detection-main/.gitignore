@@ -59,6 +59,11 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.env
 
 # Project Specific
 history.db
