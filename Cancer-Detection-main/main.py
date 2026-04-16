@@ -193,3 +193,11 @@ save_file = os.path.join(
 
 torch.save(model.state_dict(), save_file)
 print(f"\n✅ Model saved at {save_file}")
+
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
