@@ -10,7 +10,7 @@ app = Flask(__name__)
 # ===============================
 # CONFIG
 # ===============================
-MODEL_PATH = "saved_models/efficientnet_b4_skin_cancer_4class.pth"
+MODEL_PATH = "saved_models/efficientnet_b0_skin_cancer_4class.pth"
 IMAGE_SIZE = 384
 CLASSES = ["bcc", "scc", "melanoma", "benign"]
 
