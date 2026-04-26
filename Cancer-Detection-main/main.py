@@ -21,7 +21,8 @@ print("CUDA device count:", torch.cuda.device_count())
 INPUT_DIRS = {
     "bcc": r"balamced_dataset_1\images\train\bcc",
     "scc": r"balamced_dataset_1\images\train\scc",
-    "melanoma": r"balamced_dataset_1\images\train\melanoma"
+    "melanoma": r"balamced_dataset_1\images\train\melanoma",
+    "benign": r"balamced_dataset_1\images\train\benign"
 }
 
 OUTPUT_BASE = "cleaned_images/train"
