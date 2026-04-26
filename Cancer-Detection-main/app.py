@@ -216,12 +216,13 @@ def auth():
                 session['role'] = 'patient'
                 return redirect(url_for('dashboard'))
                 
-        elif action == 'login':
-            user = get_user_by_username(username)
-            if user and check_password_hash(user['password_hash'], password):
-                session['user_id'] = user['id']
-                session['username'] = user['username']
-                session['role'] = user['role']
+            elif action == 'login':
+                 user = get_user_by_username(username)
+                    if user and check_password_hash(user['password_hash'], password):
+                        session.permanent = True   # ✅ ADD HERE
+                        session['user_id'] = user['id']
+                        session['username'] = user['username']
+                        session['role'] = user['role']
                 return redirect(url_for('dashboard'))
             else:
                 flash("Invalid credentials", "error")
