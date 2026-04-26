@@ -206,15 +206,18 @@ def auth():
         from werkzeug.security import check_password_hash, generate_password_hash
         
         if action == 'register':
-            if get_user_by_username(username):
-                flash("Username already exists", "error")
-            else:
-                pw_hash = generate_password_hash(password)
-                user_id = create_user(username, pw_hash, 'patient')
-                session['user_id'] = user_id
-                session['username'] = username
-                session['role'] = 'patient'
-                return redirect(url_for('dashboard'))
+           if get_user_by_username(username):
+             flash("Username already exists", "error")
+         else:
+             pw_hash = generate_password_hash(password)
+             user_id = create_user(username, pw_hash, 'patient')
+
+            session.permanent = True   # ✅ ADD HERE
+            session['user_id'] = user_id
+            session['username'] = username
+            session['role'] = 'patient'
+
+            return redirect(url_for('dashboard'))
                 
             elif action == 'login':
                  user = get_user_by_username(username)
