@@ -19,10 +19,9 @@ print("CUDA device count:", torch.cuda.device_count())
 # DATA PREPROCESSING
 # ===============================
 INPUT_DIRS = {
-    "bcc": r"C:\Users\Usama\Downloads\Cancer-Detection-main\balanced_dataset_1\balanced_dataset_1\images\train\bcc",
-    "scc": r"C:\Users\Usama\Downloads\Cancer-Detection-main\balanced_dataset_1\balanced_dataset_1\images\train\scc",
-    "melanoma": r"C:\Users\Usama\Downloads\Cancer-Detection-main\balanced_dataset_1\balanced_dataset_1\images\train\melanoma",
-    "benign": r"C:\Users\Usama\Downloads\Cancer-Detection-main\balanced_dataset_1\balanced_dataset_1\images\train\benign"
+    "bcc": r"balamced_dataset_1\images\train\bcc",
+    "scc": r"balamced_dataset_1\images\train\scc",
+    "melanoma": r"balamced_dataset_1\images\train\melanoma"
 }
 
 OUTPUT_BASE = "cleaned_images/train"
