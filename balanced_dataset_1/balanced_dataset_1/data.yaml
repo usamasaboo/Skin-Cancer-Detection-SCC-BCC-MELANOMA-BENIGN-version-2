@@ -1,7 +1,0 @@
-names:
-- bcc
-- scc
-- melanoma
-nc: 3
-train: /kaggle/working/balanced_dataset_1/images/train
-val: /kaggle/working/balanced_dataset_1/images/val
