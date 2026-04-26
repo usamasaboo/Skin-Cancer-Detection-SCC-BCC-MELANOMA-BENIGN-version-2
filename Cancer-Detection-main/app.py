@@ -33,7 +33,7 @@ MODEL_PATH_V3 = "saved_models/efficientnet_b4_skin_cancer_4class_v3.pth"
 # Model Selection Logic
 if os.path.exists(MODEL_PATH_V3):
     MODEL_PATH = MODEL_PATH_V3
-    MODEL_ARCH = 'efficientnet_b4'
+    MODEL_ARCH = 'efficientnet_b0'
     MODEL_VERSION = "v3 (SCC Optimized)"
     IMG_SIZE = 384
 elif os.path.exists(MODEL_PATH_V2):
