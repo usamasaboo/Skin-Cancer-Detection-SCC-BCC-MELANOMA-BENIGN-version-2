@@ -23,6 +23,16 @@ from clinical_features import extract_clinical_features
 app = Flask(__name__)
 app.secret_key = 'super_secret_skin_cancer_key_change_in_production'
 
+
+@app.after_request
+def apply_csp(response):
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-eval' 'unsafe-inline'; "
+        "style-src 'self' 'unsafe-inline';"
+    )
+    return response
+
 # Config
 # Config
 # Config
