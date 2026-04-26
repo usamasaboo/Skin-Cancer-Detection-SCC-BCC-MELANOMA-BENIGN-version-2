@@ -1,10 +1,12 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
 
-Flask
-gunicorn
-torch==2.11.0
-torchvision==0.17.2+cpu
-timm
+Flask==3.1.3
+gunicorn==25.3.0
+
+torch==2.11.0+cpu
+torchvision==0.26.0+cpu
+timm==1.0.26
+
 numpy
 opencv-python-headless
 Pillow
